@@ -3,6 +3,7 @@ import { TOKENS } from '@gateway/theme';
 import { Box, Stack, Typography } from '@mui/material';
 
 import { DashboardTemplate } from '../../components/templates/dashboard';
+import GateAvatarCard from '../../components/templates/gate/gate-avatar-card';
 
 export default function CreateGateway() {
   return (
@@ -30,7 +31,8 @@ export default function CreateGateway() {
               Lorem ipsum dolor sit amet
             </Typography>
           </Box>
-          <Box sx={{ width: '75%' }}></Box>
+          <Box sx={{ width: '25%' }}></Box>
+          <GateAvatarCard />
         </Stack>
         <Stack
           direction="row"
