@@ -1,5 +1,11 @@
-import { Box } from '@mui/material';
+import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
+import { Stack, Typography } from '@mui/material';
 
-export default function SnapshowGovernance() {
-  return <Box></Box>;
+export default function SnapshotGovernance() {
+  return (
+    <Stack direction={'column'}>
+      <ElectricBoltIcon />
+      <Typography variant="button">SNAPSHOT GOVERNANCE</Typography>
+    </Stack>
+  );
 }

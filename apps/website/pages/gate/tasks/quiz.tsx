@@ -1,5 +1,11 @@
-import { Box } from '@mui/material';
+import QuizIcon from '@mui/icons-material/Quiz';
+import { Stack, Typography } from '@mui/material';
 
 export default function Quiz() {
-  return <Box></Box>;
+  return (
+    <Stack direction={'column'}>
+      <QuizIcon />
+      <Typography variant="button">CREATE QUIZ</Typography>
+    </Stack>
+  );
 }

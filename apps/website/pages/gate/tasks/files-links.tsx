@@ -1,5 +1,11 @@
-import { Box } from '@mui/material';
+import LinkIcon from '@mui/icons-material/Link';
+import { Stack, Typography } from '@mui/material';
 
 export default function FilesLinks() {
-  return <Box></Box>;
+  return (
+    <Stack direction={'column'}>
+      <LinkIcon />
+      <Typography variant="button">FILES & LINKS</Typography>
+    </Stack>
+  );
 }

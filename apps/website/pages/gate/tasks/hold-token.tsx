@@ -1,5 +1,11 @@
-import { Box } from '@mui/material';
+import BlurCircularIcon from '@mui/icons-material/BlurCircular'; // note: placeholder icon for token
+import { Stack, Typography } from '@mui/material';
 
 export default function HoldToken() {
-  return <Box></Box>;
+  return (
+    <Stack direction={'column'}>
+      <BlurCircularIcon />
+      <Typography variant="button">HOLD TOKEN</Typography>
+    </Stack>
+  );
 }
