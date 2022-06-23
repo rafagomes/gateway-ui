@@ -4,18 +4,18 @@ query get_explore($id: uuid!) {
     gate_name
     description
     categories
-    badge
+    #badge
     dao {
       id
-      logo_url
+      #logo_url
       name
     }
   }
   daos {
     id
     name
-    logo_url
-    background_url
+    #logo_url
+    #background_url
     description
     categories
     created_at
@@ -25,7 +25,7 @@ query get_explore($id: uuid!) {
   people: users(where: {id: {_neq: $id}, name: {_neq: "", _is_null: false }}) {
     id
     name
-    pfp
+    #pfp
     about
     username
   }
