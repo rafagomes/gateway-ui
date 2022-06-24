@@ -83,11 +83,20 @@ export function ProfileTemplate({
    * @param {Credentials} credential - the credential to be referenced
    */
   const mintNFT = async (credential: Credentials) => {
-    const ipfs = await uploadMetadataToIPFS({
+    const obj = {
       name: credential.name,
       image: credential.image,
       description: credential.description,
-    });
+      issuer_id: credential.issuer_id,
+      target_id: user.id,
+      details: credential.details,
+    };
+
+    console.log('Obj', obj);
+
+    const ipfs = await uploadMetadataToIPFS(obj);
+
+    console.log(`IPFS hash: ${ipfs}`);
 
     const isMinted = await mint(`ipfs://${ipfs}`);
 
@@ -343,6 +352,7 @@ export function ProfileTemplate({
                       pending={credential.status === 'pending'}
                       mintable={credential.status === 'to_mint'}
                       mint={() => mintNFT(credential)}
+                      isNFT={credential.status === 'minted'}
                     />
                   </Grid>
                 ))}
