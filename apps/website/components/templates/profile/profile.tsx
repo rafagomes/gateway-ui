@@ -18,8 +18,10 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
+import { useBiconomyMint } from '../../../hooks/useMint';
+import { usePinata } from '../../../hooks/usePinata';
 import { gqlMethods } from '../../../services/api';
-import { Users, Credentials } from '../../../services/graphql/types.generated';
+import { Credentials, Users } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
 import { NavBarAvatar } from '../../organisms/navbar/navbar-avatar';
 import PocModalMinted from '../../organisms/poc-modal-minted/poc-modal-minted';
@@ -51,11 +53,54 @@ export function ProfileTemplate({
   claimableCredentials,
 }: Props) {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [credential, setCredential] = useState<Credentials | null>(null);
+
+  const handleOpen = (credential: Credentials) => {
+    setCredential(credential);
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setCredential(null);
+    setOpen(false);
+  };
 
   const session = useSession();
   const router = useRouter();
+
+  const mintCredentialMutation = useMutation(
+    'mintCredential',
+    session.data?.user && gqlMethods(session.data.user).mint_credential
+  );
+
+  const { mint, loading, minted } = useBiconomyMint(
+    process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS
+  );
+
+  const { uploadMetadataToIPFS } = usePinata();
+
+  /**
+   * It mints a credential.
+   * @param {Credentials} credential - the credential to be referenced
+   */
+  const mintNFT = async (credential: Credentials) => {
+    const ipfs = await uploadMetadataToIPFS({
+      name: credential.name,
+      image: credential.image,
+      description: credential.description,
+    });
+
+    const isMinted = await mint(`ipfs://${ipfs}`);
+
+    isMinted &&
+      mintCredentialMutation.mutate(
+        { id: credential.id },
+        {
+          onSuccess: () => {
+            handleOpen(credential);
+          },
+        }
+      );
+  };
 
   const updateMutation = useMutation(
     'claimCredential',
@@ -111,7 +156,12 @@ export function ProfileTemplate({
 
   return (
     <>
-      <PocModalMinted open={open} handleClose={handleClose} />
+      <PocModalMinted
+        open={open}
+        handleClose={handleClose}
+        credential={credential}
+        subsidised
+      />
       <Paper
         sx={{
           height: '280px',
@@ -260,7 +310,7 @@ export function ProfileTemplate({
                   <CredentialCard smaller pending />
                 </Grid>
                 <Grid item xs={4}>
-                  <CredentialCard smaller mintable mint={handleOpen} />
+                  <CredentialCard smaller mintable mint={mintNFT} />
                 </Grid>
                 <Grid item xs={4}>
                   <CredentialCard smaller isNFT />
@@ -291,6 +341,8 @@ export function ProfileTemplate({
                       to_complete={credential.status === 'to_complete'}
                       complete={() => goToEarn(credential.id)}
                       pending={credential.status === 'pending'}
+                      mintable={credential.status === 'to_mint'}
+                      mint={() => mintNFT(credential)}
                     />
                   </Grid>
                 ))}
