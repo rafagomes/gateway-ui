@@ -87,7 +87,8 @@ export function ViewCredentialTemplate({ credentialInfo }) {
           Check profile
         </Button>
       </Box>
-      <Typography variant="h5" sx={{ marginBottom: '20px' }}>
+      <Typography variant="h5" sx={{ display: 'block', color: '#fff', fontSize: '34px' ,marginBottom:'20px' }}
+                ml={{ xs: '0px', md: '92px' }}>
         Shriram Chandra <br /> Proof of Credential
       </Typography>
       <Stack
@@ -97,23 +98,31 @@ export function ViewCredentialTemplate({ credentialInfo }) {
         gap={6}
       >
         {/* Credential details */}
-        <Grid container>
+        <Grid
+          container
+          direction={{ xs: 'column', md: 'row' }}
+          sx={{ rowGap: '15px' }}
+        >
           <Grid item xs={5}>
-            <Typography variant="h6" fontWeight="bold">
+            <Typography variant="h6" fontWeight="bold" 
+            sx={{ display: 'block', color: '#fff', fontSize: '24px' }}
+                ml={{ xs: '0px', md: '92px' }}>
               Details
             </Typography>
-            <Typography variant="caption">
+            <Typography variant="caption"
+            sx={{ display: 'block', fontSize: '14px' }}
+            ml={{ xs: '0px', md: '92px' }}>
               Basic Details of Credential
             </Typography>
           </Grid>
           <Grid item xs={5}>
-            <Stack direction="row">
+            <Stack direction={{ xs: 'column', sm: 'row' }}>
               {/* TODO: Responsiveness */}
               <Image
                 loader={() => credentialImgUrl}
                 src={credentialImgUrl}
-                height={300}
-                width={1200}
+                height={389}
+                width={389}
                 alt="credential image"
                 style={{ borderRadius: '5px' }}
               />
@@ -121,21 +130,32 @@ export function ViewCredentialTemplate({ credentialInfo }) {
                 sx={{
                   position: 'relative',
                   minHeight: '300px',
-                  maxWidth: '500px',
-                  marginLeft: '32px',
+                  marginTop:"10px"
                 }}
+                ml={{ xs: '0px', sm: '32px' }}
+                minHeight={{ xs: '180px', md: '300px' }}
               >
-                <Typography variant="h6" sx={{ marginBottom: '10px' }}>
+                <Typography variant="h6" sx={{ marginBottom: '10px',fontSize:'34px' }}>
                   {credential.name}
                 </Typography>
                 <Chip label="Contributor" sx={{ marginBottom: '20px' }} />
                 <Box>
-                  <Typography variant="caption">
+                  <Typography variant="caption" sx={{ fontSize:'16px' }}>
                     {credential.description}
                   </Typography>
                 </Box>
-                <Box sx={{ position: 'absolute', bottom: '0' }}>
-                  <Typography variant="caption">Created by</Typography>
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    bottom: '0',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography sx={{ width: 'max-content', fontSize:'14px' }} variant="caption">
+                    Created by
+                  </Typography>
                   <Chip
                     avatar={<Avatar alt="chip avatar" src={randomNftUrl} />}
                     label="Harisson Santos"
@@ -151,16 +171,29 @@ export function ViewCredentialTemplate({ credentialInfo }) {
         )}
         {(credential.status === 'pending' || 'to_mint' || 'minted') && (
           // Your details
-          <Grid container>
+          <Grid
+            container
+            direction={{ xs: 'column', md: 'row' }}
+            sx={{ rowGap: '15px' }}
+          >
             <Grid item xs={5}>
-              <Typography variant="h6" fontWeight="bold">
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ display: 'block', color: '#fff', fontSize: '24px' }}
+                ml={{ xs: '0px', md: '92px' }}
+              >
                 Your Details
               </Typography>
-              <Typography variant="caption">
+              <Typography
+                variant="caption"
+                sx={{ display: 'block', fontSize: '14px' }}
+                ml={{ xs: '0px', md: '92px' }}
+              >
                 Customize Your Credential
               </Typography>
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={4}>
               {Object.keys(details).map(
                 (detailKey, index) =>
                   details[detailKey] && (
@@ -179,19 +212,32 @@ export function ViewCredentialTemplate({ credentialInfo }) {
           <Divider light sx={{ width: '100%' }} />
         )}
         {(credential.status === 'pending' || 'to_mint' || 'minted') && (
-          <Grid container>
+          <Grid
+            container
+            direction={{ xs: 'column', md: 'row' }}
+            sx={{ rowGap: '15px' }}
+          >
             {/* Proudest Accomplishments */}
             <Grid item xs={5}>
-              <Typography variant="h6" fontWeight="bold">
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ display: 'block', color: '#fff', fontSize: '24px' }}
+                ml={{ xs: '0px', md: '92px' }}
+              >
                 Proudest Accomplishments
               </Typography>
-              <Typography variant="caption">
+              <Typography
+                variant="caption"
+                sx={{ display: 'block', fontSize: '14px' }}
+                ml={{ xs: '0px', md: '92px' }}
+              >
                 Tell the world about your greatest accomplishments and get it
                 verified!
               </Typography>
             </Grid>
             {accomplishments.map((accomplishment, index) => (
-              <Grid item xs={5} key={index}>
+              <Grid item xs={4} key={index} sx={{paddingLeft:"87px"}}>
                 <Typography
                   variant="subtitle1"
                   fontWeight="bold"
@@ -201,7 +247,7 @@ export function ViewCredentialTemplate({ credentialInfo }) {
                     marginBottom: '10px',
                   }}
                 >
-                  <LooksOneIcon style={{ marginRight: '5px' }} />
+                  <LooksOneIcon style={{ marginLeft: '-40px' ,marginRight:"15px"}} />
                   {accomplishment.title}
                 </Typography>
                 <Typography variant="caption">
@@ -211,23 +257,23 @@ export function ViewCredentialTemplate({ credentialInfo }) {
                   <Typography
                     variant="subtitle2"
                     fontWeight="bold"
-                    style={{ marginBottom: '20px' }}
+                    style={{ marginBottom: '20px' , fontSize:'16px'}}
                   >
                     Proof of Work
                   </Typography>
-                  <Box>
+                  <Box style={{ marginLeft: '0px' ,marginRight:"15px"}}>
                     <Typography
                       variant="subtitle2"
                       style={{ display: 'flex', alignItems: 'center' }}
                     >
-                      <ArticleIcon style={{ marginRight: '5px' }} />
+                      <ArticleIcon style={{ marginRight: '20px' }} />
                       {accomplishment.type}
                     </Typography>
-                    <Typography variant="caption">
+                    <Typography variant="caption" style={{marginLeft:"44px"}}>
                       {accomplishment.description}
                     </Typography>
                     <br />
-                    <Typography variant="caption">
+                    <Typography variant="caption" style={{marginLeft:"44px"}}>
                       {accomplishment.link}
                     </Typography>
                   </Box>
@@ -246,7 +292,7 @@ export function ViewCredentialTemplate({ credentialInfo }) {
           </Button>
         )}
       </Stack>
-      <Box alignSelf="flex-end" marginRight="300px">
+      <Box alignSelf="flex-end" marginRight="100px">
         {(credential.status === 'pending' || 'to_mint' || 'minted') && (
           <ArrowCircleUpIcon
             fontSize="large"

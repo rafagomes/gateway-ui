@@ -73,7 +73,7 @@ export function AccomplishmentsForm({
       </Typography>
       <Typography
         variant="caption"
-        sx={{ marginTop: '-15px', display: 'block' }}
+        sx={{ marginTop: '-15px', display: 'block',color:"ffffffb5" }}
       >
         Showcase your work related to this accomplishment
       </Typography>

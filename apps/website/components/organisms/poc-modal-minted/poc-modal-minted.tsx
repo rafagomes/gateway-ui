@@ -5,20 +5,21 @@ import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close'
 import { Credentials } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
 
 /* It's a style object that is used to position the modal in the center of the screen. */
 const style = {
   position: 'absolute' as const,
-  top: '50%',
+  top: '60%',
   left: '50%',
-  height: '100vh',
   minWidth: '100%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
-  p: 4,
+  p: 3,
+  marginTop: '-80px',
 };
 
 /* It's defining the props that the modal will take. */
@@ -54,12 +55,27 @@ export default function PocModalMinted({
             height={40}
             width={40}
           />
+
+          <IconButton
+            aria-label="close"
+            onClick={() => router.push('/profile')}
+            sx={{
+              position: 'absolute',
+              right: 20,
+              top: 25,
+              color:"#fff",
+              background: "rgba(255, 255, 255, 0.15)",
+              borderRadius: "64px"
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              minHeight: '100vh',
+              minHeight: '90vh',
             }}
           >
             <Box>
@@ -67,7 +83,7 @@ export default function PocModalMinted({
                 id="modal-modal-title"
                 variant="h6"
                 component="h2"
-                fontSize={48}
+                fontSize={35}
                 textAlign="center"
               >
                 Congrats your work is verified and on-chain.{' '}
@@ -75,7 +91,7 @@ export default function PocModalMinted({
               {subsidised && (
                 <Typography
                   id="modal-modal-description"
-                  sx={{ mt: 2, textAlign: 'center', marginBottom: '20px' }}
+                  sx={{ mb: 1, textAlign: 'center', marginBottom: '20px' }}
                   fontSize={16}
                 >
                   Your NFT has been minted at cost free subsidized by{' '}
