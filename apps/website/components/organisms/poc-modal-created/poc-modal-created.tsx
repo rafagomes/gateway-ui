@@ -10,18 +10,20 @@ import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import { gqlMethods } from '../../../services/api';
 import CredentialCard from '../../molecules/credential-card';
 
 const style = {
   position: 'absolute' as const,
-  top: '50%',
+  top: '60%',
   left: '50%',
   minWidth: '100%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
-  p: 4,
+  p: 3,
+  marginTop: '-100px',
 };
 
 export default function PocModalCreated({
@@ -78,13 +80,27 @@ export default function PocModalCreated({
             height={40}
             width={40}
           />
+          <IconButton
+            aria-label="close"
+            onClick={() => router.push('/profile')}
+            sx={{
+              position: 'absolute',
+              right: 20,
+              top: 25,
+              color:"#fff",
+              background: "rgba(255, 255, 255, 0.15)",
+              borderRadius: "64px"
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-around',
               alignItems: 'center',
-              minHeight: '830px',
+              minHeight: '80vh',
             }}
           >
             <Box>
@@ -92,14 +108,14 @@ export default function PocModalCreated({
                 id="modal-modal-title"
                 variant="h6"
                 component="h2"
-                fontSize={48}
+                fontSize={35}
                 textAlign="center"
               >
                 Proof of Credential created
               </Typography>
               <Typography
                 id="modal-modal-description"
-                sx={{ mt: 2, textAlign: 'center' }}
+                sx={{ mb: 1, textAlign: 'center' }}
                 fontSize={16}
               >
                 You have created the{' '}
@@ -140,7 +156,7 @@ export default function PocModalCreated({
               <Button
                 variant="outlined"
                 size="small"
-                sx={{ margin: '20px 0 0 20px' }}
+                sx={{ margin: '10px 0 0 20px' }}
                 onClick={() => router.push('/profile')}
               >
                 Go to credentials
