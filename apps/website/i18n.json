@@ -1,12 +1,14 @@
 {
-  "locales": ["en"],
+  "locales": ["en", "pt-PT"],
   "defaultLocale": "en",
   "pages": {
     "*": ["common"],
     "/": ["index"],
     "/explore": ["explore"],
     "/new-user": ["dashboard-new-user"],
-    "/dao/[id]": ["dao-profile"]
+    "/dao/[id]": ["dao-profile"],
+    "/profile": ["user-profile"],
+    "/profile/edit": ["user-profile"]
   },
-  "localeDetection": false
+  "localeDetection": true
 }

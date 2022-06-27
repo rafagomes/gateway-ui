@@ -1,6 +1,14 @@
+import useTranslation from 'next-translate/useTranslation';
+
 import { useFormContext } from 'react-hook-form';
 
-import { Button, CircularProgress, Stack, TextField } from '@mui/material';
+import {
+  Button,
+  CircularProgress,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 import { NewUserSchema } from './schema';
 
@@ -21,6 +29,7 @@ export function Form({ onSubmit, isLoading }: Props) {
     handleSubmit,
     formState: { errors },
   } = useFormContext<NewUserSchema>();
+  const { t } = useTranslation('dashboard-new-user');
 
   return (
     <Stack
@@ -54,6 +63,9 @@ export function Form({ onSubmit, isLoading }: Props) {
         error={!!errors.email_address}
         helperText={errors.email_address?.message}
       />
+      <Typography component="p" variant="caption">
+        {t('form.fields.email.disclaimer')}
+      </Typography>
       <Button
         variant="contained"
         type="submit"

@@ -1,0 +1,11 @@
+{
+  "edit": {
+    "about": "Sobre mim",
+    "username": "Nome de usuário",
+    "display-name": "Nome",
+    "email": {
+      "value": "Endereço de Email",
+      "disclaimer": "Adiciona o teu email ao teu perfil da Gateway para receberes atualizações sobre o teu progresso e receber notificações importantes."
+    }
+  }
+}

@@ -4,7 +4,10 @@
     "title": "Create Profile",
     "caption": "Information provided will be displayed on your Gateway profile.",
     "fields": {
-      "test": "test"
+      "test": "test",
+      "email": {
+        "disclaimer": "Add your email address to your Gateway profile to receive updates on your progress and to receive important notifications."
+      }
     }
   }
 }

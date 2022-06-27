@@ -1,0 +1,11 @@
+{
+  "edit": {
+    "about": "About",
+    "username": "Username",
+    "display-name": "Display Name",
+    "email": {
+      "disclaimer": "Add your email address to your Gateway profile to receive updates on your progress and to receive important notifications.",
+      "value": "Email Address"
+    }
+  }
+}

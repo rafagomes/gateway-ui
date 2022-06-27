@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
@@ -64,14 +65,12 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
   } = useFormContext<EditUserSchema>();
 
   const router = useRouter();
+  const { t } = useTranslation('user-profile');
 
   const [name, setName] = useState(userData.name || '');
   const [username, setUsername] = useState(userData.username || '');
   const [about, setAbout] = useState(userData.about || '');
   const [email, setEmail] = useState(userData.email_address || '');
-  const [discord, setDiscord] = useState(userData.discord_id || '');
-  const [github, setGithub] = useState('');
-  const [twitter, setTwitter] = useState('');
   const [image, setImage] = useState('/images/home.png');
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -150,7 +149,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
             <br />
             <TextField
               id="outlined-basic"
-              label="DISPLAY NAME"
+              label={t('edit.display-name').toUpperCase()}
               variant="outlined"
               style={{ width: '100%' }}
               value={name}
@@ -164,7 +163,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
             />
             <TextField
               id="outlined-basic"
-              label="USERNAME"
+              label={t('edit.username').toUpperCase()}
               variant="outlined"
               style={{ width: '100%', marginTop: 20 }}
               value={username}
@@ -178,7 +177,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
             />
             <TextField
               id="standard-textarea"
-              label="ABOUT"
+              label={t('edit.about').toUpperCase()}
               multiline
               minRows={5}
               style={{ width: '100%', marginTop: 20 }}
@@ -191,17 +190,12 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
               }}
               value={about}
             />
-            {/* <Typography
-              variant="h6"
-              style={{ fontSize: 12, padding: '10px 0' }}
-            >
-              SOCIALS
-            </Typography>
+
             <TextField
               id="outlined-basic"
-              label="EMAIL"
+              label={t('edit.email.value').toUpperCase()}
               variant="outlined"
-              style={{ width: '100%' }}
+              style={{ width: '100%', marginTop: 20 }}
               {...register('email_address')}
               error={!!errors.email_address}
               helperText={errors.email_address?.message}
@@ -221,6 +215,17 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
                 ),
               }}
             />
+
+            <Typography component="p" variant="caption" sx={{ marginTop: 2 }}>
+              {t('edit.email.disclaimer')}
+            </Typography>
+
+            {/* <Typography
+              variant="h6"
+              style={{ fontSize: 12, padding: '10px 0' }}
+            >
+              SOCIALS
+            </Typography>
             <TextField
               id="outlined-basic"
               label="TWITTER"
@@ -296,7 +301,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
                 maxWidth: 325,
                 borderRadius: '8px',
                 margin: 'auto',
-                marginTop:'22px',
+                marginTop: '22px',
                 width: '100%',
                 position: 'relative',
               }}
@@ -309,10 +314,19 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
                   alt="green iguana"
                 />
                 <CardContent>
-                  <Typography sx={{wordBreak:"break-word"}} gutterBottom variant="h5" component="div">
+                  <Typography
+                    sx={{ wordBreak: 'break-word' }}
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                  >
                     {name ? name : 'Loading....'}
                   </Typography>
-                  <Typography sx={{wordBreak:"break-word"}} variant="body2" color="text.secondary">
+                  <Typography
+                    sx={{ wordBreak: 'break-word' }}
+                    variant="body2"
+                    color="text.secondary"
+                  >
                     {username ? username : 'Loading....'}
                   </Typography>
                 </CardContent>

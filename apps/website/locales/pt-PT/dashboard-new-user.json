@@ -1,0 +1,13 @@
+{
+  "title": "Estás um passo mais próximo de entrar na Gateway.",
+  "form": {
+    "title": "Criar Perfil",
+    "caption": "A informação dada irá ser mostrada no perfil da Gateway.",
+    "fields": {
+      "test": "test",
+      "email": {
+        "disclaimer": "Adiciona o teu email ao teu perfil da Gateway para receberes atualizações sobre o teu progresso e receber notificações importantes."
+      }
+    }
+  }
+}
