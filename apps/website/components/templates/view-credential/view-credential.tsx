@@ -87,7 +87,7 @@ export function ViewCredentialTemplate({ credentialInfo }) {
           Check profile
         </Button>
       </Box>
-      <Typography variant="h5" sx={{ display: 'block', color: '#fff', fontSize: '24px' ,marginBottom:'20px' }}
+      <Typography variant="h5" sx={{ display: 'block', color: '#fff', fontSize: '34px' ,marginBottom:'20px' }}
                 ml={{ xs: '0px', md: '92px' }}>
         Shriram Chandra <br /> Proof of Credential
       </Typography>
@@ -135,12 +135,12 @@ export function ViewCredentialTemplate({ credentialInfo }) {
                 ml={{ xs: '0px', sm: '32px' }}
                 minHeight={{ xs: '180px', md: '300px' }}
               >
-                <Typography variant="h6" sx={{ marginBottom: '10px' }}>
+                <Typography variant="h6" sx={{ marginBottom: '10px',fontSize:'34px' }}>
                   {credential.name}
                 </Typography>
                 <Chip label="Contributor" sx={{ marginBottom: '20px' }} />
                 <Box>
-                  <Typography variant="caption">
+                  <Typography variant="caption" sx={{ fontSize:'16px' }}>
                     {credential.description}
                   </Typography>
                 </Box>
@@ -153,7 +153,7 @@ export function ViewCredentialTemplate({ credentialInfo }) {
                     alignItems: 'center',
                   }}
                 >
-                  <Typography sx={{ width: 'max-content' }} variant="caption">
+                  <Typography sx={{ width: 'max-content', fontSize:'14px' }} variant="caption">
                     Created by
                   </Typography>
                   <Chip
