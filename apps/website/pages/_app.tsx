@@ -2,6 +2,7 @@ import { SessionProvider } from 'next-auth/react';
 import { AppProps as NextAppProps } from 'next/app';
 import Head from 'next/head';
 
+import { Provider as SelfIDProvider } from '@self.id/react';
 import { Hydrate, QueryClientProvider } from 'react-query';
 import { WagmiConfig } from 'wagmi';
 
@@ -37,17 +38,19 @@ function CustomApp({
       </Head>
       <SessionProvider session={session}>
         <WagmiConfig client={web3client}>
-          <ThemeProvider>
-            <QueryClientProvider client={queryClient}>
-              <Hydrate state={pageProps.dehydratedState}>
-                <AuthProvider isAuthPage={Component.auth}>
-                  <NavStateProvider>
-                    <Component {...pageProps} />
-                  </NavStateProvider>
-                </AuthProvider>
-              </Hydrate>
-            </QueryClientProvider>
-          </ThemeProvider>
+          <SelfIDProvider client={{ ceramic: 'testnet-clay' }}>
+            <ThemeProvider>
+              <QueryClientProvider client={queryClient}>
+                <Hydrate state={pageProps.dehydratedState}>
+                  <AuthProvider isAuthPage={Component.auth}>
+                    <NavStateProvider>
+                      <Component {...pageProps} />
+                    </NavStateProvider>
+                  </AuthProvider>
+                </Hydrate>
+              </QueryClientProvider>
+            </ThemeProvider>
+          </SelfIDProvider>
         </WagmiConfig>
       </SessionProvider>
     </>

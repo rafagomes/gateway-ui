@@ -177,6 +177,20 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
               }}
             />
             <TextField
+              id="outlined-basic"
+              label="E-MAIL"
+              variant="outlined"
+              style={{ width: '100%', marginTop: 20 }}
+              value={email}
+              {...register('email')}
+              error={!!errors.username}
+              helperText={errors.username?.message}
+              onChange={(e) => {
+                window.localStorage.setItem('username', e.target.value);
+                setUsername(e.target.value);
+              }}
+            />
+            <TextField
               id="standard-textarea"
               label="ABOUT"
               multiline
@@ -197,30 +211,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
             >
               SOCIALS
             </Typography>
-            <TextField
-              id="outlined-basic"
-              label="EMAIL"
-              variant="outlined"
-              style={{ width: '100%' }}
-              {...register('email_address')}
-              error={!!errors.email_address}
-              helperText={errors.email_address?.message}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              type="email"
-              value={email}
-              InputProps={{
-                endAdornment: email && (
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => setEmail('')}
-                  >
-                    <CancelIcon style={{ color: 'white' }} />
-                  </IconButton>
-                ),
-              }}
-            />
+
             <TextField
               id="outlined-basic"
               label="TWITTER"
@@ -296,7 +287,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
                 maxWidth: 325,
                 borderRadius: '8px',
                 margin: 'auto',
-                marginTop:'22px',
+                marginTop: '22px',
                 width: '100%',
                 position: 'relative',
               }}
@@ -309,10 +300,19 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
                   alt="green iguana"
                 />
                 <CardContent>
-                  <Typography sx={{wordBreak:"break-word"}} gutterBottom variant="h5" component="div">
+                  <Typography
+                    sx={{ wordBreak: 'break-word' }}
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                  >
                     {name ? name : 'Loading....'}
                   </Typography>
-                  <Typography sx={{wordBreak:"break-word"}} variant="body2" color="text.secondary">
+                  <Typography
+                    sx={{ wordBreak: 'break-word' }}
+                    variant="body2"
+                    color="text.secondary"
+                  >
                     {username ? username : 'Loading....'}
                   </Typography>
                 </CardContent>

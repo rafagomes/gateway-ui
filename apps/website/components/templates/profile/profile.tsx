@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
+import { useCeramic } from '../../../hooks/useCeramic';
 import { useBiconomyMint } from '../../../hooks/useMint';
 import { usePinata } from '../../../hooks/usePinata';
 import { gqlMethods } from '../../../services/api';
@@ -66,6 +67,7 @@ export function ProfileTemplate({
 
   const session = useSession();
   const router = useRouter();
+  const ceramic = useCeramic();
 
   const mintCredentialMutation = useMutation(
     'mintCredential',
