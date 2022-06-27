@@ -202,7 +202,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
       </Box>
       <Typography
         variant="h5"
-        sx={{ marginBottom: '40px', color: '#fff' }}
+        sx={{ marginBottom: '40px', color: '#fff',fontSize:"34px" }}
         ml={{ xs: '0px', md: '92px' }}
       >
         Earn Proof of Credential
@@ -223,14 +223,14 @@ export function EarnCredentialTemplate({ credentialInfo }) {
             <Typography
               variant="h6"
               fontWeight="bold"
-              sx={{ display: 'block' }}
+              sx={{ display: 'block', color:"#fff",fontSize:"24px"}}
               ml={{ xs: '0px', md: '92px' }}
             >
               Details
             </Typography>
             <Typography
               variant="caption"
-              sx={{ display: 'block' }}
+              sx={{ display: 'block',color:"ffffffb5" }}
               ml={{ xs: '0px', md: '92px' }}
             >
               Basic Details of Credential
@@ -298,14 +298,14 @@ export function EarnCredentialTemplate({ credentialInfo }) {
               <Typography
                 variant="h6"
                 fontWeight="bold"
-                sx={{ display: 'block' }}
+                sx={{ display: 'block',color:"#fff",fontSize:"24px" }}
                 ml={{ xs: '0px', md: '92px' }}
               >
                 Your Details
               </Typography>
               <Typography
                 variant="caption"
-                sx={{ display: 'block' }}
+                sx={{ display: 'block' ,color:"ffffffb5"}}
                 ml={{ xs: '0px', md: '92px' }}
               >
                 Customize Your Credential
@@ -336,14 +336,14 @@ export function EarnCredentialTemplate({ credentialInfo }) {
               <Typography
                 variant="h6"
                 fontWeight="bold"
-                sx={{ display: 'block' }}
+                sx={{ display: 'block',color:"#fff",fontSize:"24px" }}
                 ml={{ xs: '0px', md: '92px' }}
               >
                 Proudest Accomplishments
               </Typography>
               <Typography
                 variant="caption"
-                sx={{ display: 'block' }}
+                sx={{ display: 'block',color:"ffffffb5" }}
                 ml={{ xs: '0px', md: '92px' }}
               >
                 Tell the world about your greatest accomplishments and get it
