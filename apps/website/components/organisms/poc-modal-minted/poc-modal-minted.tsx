@@ -14,6 +14,7 @@ const style = {
   position: 'absolute' as const,
   top: '50%',
   left: '50%',
+  height: '100vh',
   minWidth: '100%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
@@ -57,9 +58,8 @@ export default function PocModalMinted({
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'space-around',
               alignItems: 'center',
-              minHeight: '830px',
+              minHeight: '100vh',
             }}
           >
             <Box>
@@ -75,7 +75,7 @@ export default function PocModalMinted({
               {subsidised && (
                 <Typography
                   id="modal-modal-description"
-                  sx={{ mt: 2, textAlign: 'center' }}
+                  sx={{ mt: 2, textAlign: 'center', marginBottom: '20px' }}
                   fontSize={16}
                 >
                   Your NFT has been minted at cost free subsidized by{' '}
