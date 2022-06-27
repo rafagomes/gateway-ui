@@ -1,12 +1,13 @@
 import { useSession } from 'next-auth/react';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 
-import { Box, Snackbar, Stack, Typography } from '@mui/material';
+import { Alert, Box, Snackbar, Stack, Typography } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
 import { useSnackbar } from '../../../hooks/use-snackbar';
@@ -35,6 +36,36 @@ export function NewUserTemplate({ user }: Props) {
   const router = useRouter();
   const session = useSession();
 
+  const email_address = methods.watch('email_address') as string;
+  const username = methods.watch('username') as string;
+
+  const { data: validateData, isLoading } = useQuery(
+    ['users', email_address, username],
+    () => {
+      const or = [];
+
+      !!email_address &&
+        or.push({
+          email_address: {
+            _eq: email_address,
+          },
+        });
+
+      !!username && or.push({ username: { _eq: username } });
+
+      return session.data?.user
+        ? gqlMethods(session.data.user).Users({
+            where: {
+              _or: or,
+            },
+          })
+        : null;
+    },
+    {
+      enabled: !!email_address || !!username,
+    }
+  );
+
   const updateMutation = useMutation(
     'updateProfile',
     session.data?.user && gqlMethods(session.data.user).update_user_profile,
@@ -46,7 +77,48 @@ export function NewUserTemplate({ user }: Props) {
     }
   );
 
+  const validate = () => {
+    if (!isLoading && validateData?.users?.length) {
+      const emails = validateData.users.map((user) => user.email_address);
+      const usernames = validateData.users.map((user) => user.username);
+      console.log(emails, email_address);
+      console.log(usernames, username);
+
+      if (emails.includes(email_address)) {
+        methods.setError('email_address', {
+          message: t('form.fields.email.error'),
+        });
+        console.log(emails.includes(email_address));
+      } else {
+        methods.clearErrors('email_address');
+      }
+
+      if (usernames.includes(username)) {
+        methods.setError('username', {
+          message: t('form.fields.username.error'),
+        });
+        console.log(usernames.includes(username));
+      } else {
+        methods.clearErrors('username');
+      }
+    } else if (!isLoading && !validateData?.users?.length) {
+      methods.clearErrors();
+    }
+  };
+
   const onSubmit = (data: NewUserSchema) => {
+    // 1. verify if we have an user with the same username and/or email
+    const emails = validateData.users.map((user) => user.email_address);
+    const usernames = validateData.users.map((user) => user.username);
+
+    validate();
+
+    if (Object.keys(methods.formState.errors).length > 0) {
+      snackbar.onOpen({ message: t('form.submit.withErrors') });
+      return;
+    }
+
+    // 2. if not, update the user
     updateMutation.mutate(
       {
         id: user.id,
@@ -56,9 +128,12 @@ export function NewUserTemplate({ user }: Props) {
       },
       {
         onSuccess: () => router.push('/profile'),
+        onError: () => snackbar.onOpen({ message: 'Error updating profile' }),
       }
     );
   };
+
+  useEffect(validate, [validateData, isLoading, email_address, username]);
 
   return (
     <>
@@ -119,9 +194,17 @@ export function NewUserTemplate({ user }: Props) {
         }}
         open={snackbar.open}
         onClose={snackbar.handleClose}
-        message={snackbar.message}
         key={snackbar.vertical + snackbar.horizontal}
-      />
+        autoHideDuration={2000}
+      >
+        <Alert
+          onClose={snackbar.handleClose}
+          severity={snackbar.type}
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

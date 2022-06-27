@@ -40,7 +40,7 @@ export function Form({ onSubmit, isLoading }: Props) {
     >
       <TextField
         required
-        label="Display Name"
+        label={t('form.fields.displayName.label')}
         id="name"
         {...register('name')}
         error={!!errors.name}
@@ -48,7 +48,7 @@ export function Form({ onSubmit, isLoading }: Props) {
       />
       <TextField
         required
-        label="Username"
+        label={t('form.fields.username.label')}
         id="username"
         {...register('username')}
         error={!!errors.username}
@@ -56,7 +56,7 @@ export function Form({ onSubmit, isLoading }: Props) {
       />
       <TextField
         required
-        label="E-mail"
+        label={t('form.fields.email.label')}
         type="email"
         id="email_address"
         {...register('email_address')}
@@ -75,7 +75,7 @@ export function Form({ onSubmit, isLoading }: Props) {
         {isLoading ? (
           <CircularProgress color="inherit" size={24} />
         ) : (
-          'Enter the Gateway'
+          t('form.submit.button')
         )}
       </Button>
     </Stack>

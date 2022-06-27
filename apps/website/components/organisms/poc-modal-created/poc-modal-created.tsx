@@ -6,11 +6,12 @@ import { useState, useEffect } from 'react';
 import { AiOutlineCopy } from 'react-icons/ai';
 import { useQuery } from 'react-query';
 
-import { Button } from '@mui/material';
+import { Alert, Button, Snackbar } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 
+import { useSnackbar } from '../../../hooks/use-snackbar';
 import { gqlMethods } from '../../../services/api';
 import CredentialCard from '../../molecules/credential-card';
 
@@ -36,6 +37,7 @@ export default function PocModalCreated({
 
   const session = useSession();
   const router = useRouter();
+  const snackbar = useSnackbar();
 
   const { refetch: getCredentialGroup } = useQuery(
     ['get-credential-group'],
@@ -134,6 +136,9 @@ export default function PocModalCreated({
                     navigator.clipboard.writeText(
                       'poc.mygateway.xyz/credentials/claim/' + credentialGroupId
                     );
+                    snackbar.onOpen({
+                      message: 'URL copied to clipboard!',
+                    });
                   }}
                 />
               </fieldset>
@@ -149,6 +154,24 @@ export default function PocModalCreated({
           </Box>
         </Box>
       </Modal>
+      <Snackbar
+        anchorOrigin={{
+          vertical: snackbar.vertical,
+          horizontal: snackbar.horizontal,
+        }}
+        open={snackbar.open}
+        onClose={snackbar.handleClose}
+        autoHideDuration={3000}
+        key={snackbar.vertical + snackbar.horizontal}
+      >
+        <Alert
+          onClose={snackbar.handleClose}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

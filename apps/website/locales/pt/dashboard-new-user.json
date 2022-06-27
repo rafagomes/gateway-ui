@@ -5,9 +5,22 @@
     "caption": "A informação dada irá ser mostrada no perfil da Gateway.",
     "fields": {
       "test": "test",
+      "displayName": {
+        "label": "Nome"
+      },
+      "username": {
+        "label": "Nome de utilizador",
+        "error": "Este nome de utilizador já está a ser utilizado."
+      },
       "email": {
-        "disclaimer": "Adiciona o teu email ao teu perfil da Gateway para receberes atualizações sobre o teu progresso e receber notificações importantes."
+        "label": "Endereço de email",
+        "disclaimer": "Adiciona o teu email ao teu perfil da Gateway para receberes atualizações sobre o teu progresso e receber notificações importantes.",
+        "error": "Este endereço de email já está a ser utilizado."
       }
+    },
+    "submit": {
+      "withErrors": "Verifica as informações introduzidas e tenta novamente.",
+      "button": "Junta-te à Gateway"
     }
   }
 }

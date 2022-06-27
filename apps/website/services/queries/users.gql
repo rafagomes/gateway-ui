@@ -1,8 +1,9 @@
-query Users {
-  users {
+query Users($where: users_bool_exp = {}) {
+  users(where: $where) {
     id
     name
     pfp
     username
+    email_address
   }
 }
