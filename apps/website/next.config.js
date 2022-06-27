@@ -13,6 +13,10 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  i18n: {
+    locales: ['en', 'pt'],
+    defaultLocale: 'en',
+  },
 };
 
 const sentryWebpackPluginOptions = {
