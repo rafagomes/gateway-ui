@@ -325,6 +325,7 @@ export function ProfileTemplate({
               </Grid>
             </section>
           </Grid>
+          {/*
           <Grid item className="right" xs={4} sx={{ padding: '0 65px' }}>
             <section>
               <Box
@@ -429,6 +430,7 @@ export function ProfileTemplate({
               </div>
             </section>
           </Grid>
+          */}
         </Grid>
       </main>
     </>
