@@ -1,3 +1,6 @@
 {
-  "title": "A Tua Rede\nProfissional Descentralizada"
+  "title": "A Tua Rede\nProfissional Descentralizada",
+  "connectWallet": "Conectar a Carteira",
+  "connectWalletFirst": "Conecta antes de continuar",
+  "connectWalletWith": "Conectar com {{wallet}}"
 }

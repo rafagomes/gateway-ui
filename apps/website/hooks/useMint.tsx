@@ -183,7 +183,12 @@ export function useBiconomyMint(
    * @param [token_uri] - This is the metadata that you want to attach to the token.
    * @returns A boolean value.
    */
-  const mint = async (token_uri = ''): Promise<boolean> => {
+  const mint = async (
+    token_uri = ''
+  ): Promise<{
+    isMinted: boolean;
+    polygonURL?: string;
+  }> => {
     if (contract) {
       try {
         if (metaTxEnabled) {
@@ -232,14 +237,21 @@ export function useBiconomyMint(
         }
 
         setMinted(true);
-        return true;
+
+        return {
+          isMinted: true,
+          polygonURL: 'https://polygonscan.com/tx/' + tx.hash,
+        };
       } catch (error) {
         console.log(error);
       }
     }
 
     setMinted(false);
-    return false;
+
+    return {
+      isMinted: false,
+    };
   };
 
   return {

@@ -1,3 +1,6 @@
 {
-  "title": "Your Decentralized\nProfessional Network"
+  "title": "Your Decentralized\nProfessional Network",
+  "connectWallet": "Connect Wallet",
+  "connectWalletFirst": "Connect your wallet first",
+  "connectWalletWith": "Connect using {{wallet}}"
 }
