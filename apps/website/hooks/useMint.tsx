@@ -191,6 +191,8 @@ export function useBiconomyMint(
   }> => {
     if (contract) {
       try {
+        let tx;
+
         if (metaTxEnabled) {
           const { data: contractData } =
             await contract.populateTransaction.mint(address.address, token_uri);
@@ -209,7 +211,7 @@ export function useBiconomyMint(
             gasLimit: gasLimit * 3,
             signatureType: 'EIP712_SIGN',
           };
-          let tx;
+
           try {
             tx = await provider.send('eth_sendTransaction', [txParams]);
           } catch (err) {
@@ -226,7 +228,7 @@ export function useBiconomyMint(
         } else {
           console.log('Sending normal transaction');
 
-          const tx = await contract.mint(address.address, token_uri);
+          tx = await contract.mint(address.address, token_uri);
 
           console.log(
             'Transaction hash : https://polygonscan.com/tx/' + tx.hash
