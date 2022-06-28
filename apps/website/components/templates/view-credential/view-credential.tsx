@@ -43,6 +43,9 @@ export function ViewCredentialTemplate({ credentialInfo }) {
       name: '',
       pfp: '',
     },
+    target: {
+      name: '',
+    },
   });
   const [details, setDetails] = useState({});
   const [accomplishments, setAccomplishments] = useState([]);
@@ -55,6 +58,7 @@ export function ViewCredentialTemplate({ credentialInfo }) {
         description: credentialInfo['credentials_by_pk'].description,
         status: credentialInfo['credentials_by_pk'].status,
         issuer: credentialInfo['credentials_by_pk'].issuer,
+        target: credentialInfo['credentials_by_pk'].target,
       });
       setDetails(credentialInfo['credentials_by_pk'].details);
       setAccomplishments(credentialInfo['credentials_by_pk'].pow);
@@ -101,7 +105,7 @@ export function ViewCredentialTemplate({ credentialInfo }) {
         }}
         ml={{ xs: '0px', md: '92px' }}
       >
-        Shriram Chandra <br /> Proof of Credential
+        {credential.target.name} <br /> Proof of Credential
       </Typography>
       <Stack
         direction="column"

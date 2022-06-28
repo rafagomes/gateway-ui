@@ -44,6 +44,9 @@ export function EarnCredentialTemplate({ credentialInfo }) {
     id: null,
     name: '',
     description: '',
+    target: {
+      name: '',
+    },
     issuer: {
       name: '',
       pfp: '',
@@ -77,6 +80,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
         name: credentialInfo['credentials_by_pk'].name,
         description: credentialInfo['credentials_by_pk'].description,
         issuer: credentialInfo['credentials_by_pk'].issuer,
+        target: credentialInfo['credentials_by_pk'].target,
       });
     }
   }, [credentialInfo]);
@@ -87,9 +91,9 @@ export function EarnCredentialTemplate({ credentialInfo }) {
   const accomplishmentsMethods = useForm<AccomplishmentsTypes>({
     resolver: yupResolver(accomplishmentsSchema),
   });
+
   const credentialImgUrl =
     'https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png';
-  const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
 
   const updateMutation = useMutation(
     'completeCredential',
