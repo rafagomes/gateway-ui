@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Button, CardActions, Chip } from '@mui/material';
+import { Button, CardActions, Chip, SxProps } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -20,6 +20,7 @@ interface CredentialCardProps {
   claim?: () => void;
   complete?: () => void;
   mint?: () => void;
+  sx?: SxProps;
 }
 
 export default function CredentialCard({
@@ -35,6 +36,7 @@ export default function CredentialCard({
   claim,
   complete,
   mint,
+  sx,
 }: CredentialCardProps) {
   const [isMinting, setMinting] = useState<boolean>(false);
 
@@ -45,7 +47,7 @@ export default function CredentialCard({
   };
 
   return (
-    <Card sx={{ maxWidth: smaller ? '250px' : '345px' }}>
+    <Card sx={{ maxWidth: smaller ? '250px' : '345px', ...sx }}>
       <CardMedia
         component="img"
         image="https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png"

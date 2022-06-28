@@ -1,3 +1,4 @@
+import useTranslation from 'next-translate/useTranslation';
 import { useMemo } from 'react';
 
 import { useConnect } from 'wagmi';
@@ -13,7 +14,6 @@ import {
   ListItemIcon,
   ListItemText,
   Stack,
-  Typography,
 } from '@mui/material';
 
 import { icons } from './wallet-modal';
@@ -23,26 +23,17 @@ type Props = {
 };
 export function WalletSelect({ onSubmit }: Props) {
   const { connect, connectors, activeConnector, isConnected } = useConnect();
+  const { t } = useTranslation('index');
 
   const connectButtonLabel = useMemo(() => {
-    if (!isConnected && !activeConnector) return 'Connect to wallet first';
-    return `Connect using ${activeConnector.name}`;
+    if (!isConnected && !activeConnector) return t('connectWalletFirst');
+    return t('connectWalletWith', { wallet: activeConnector.name });
   }, [activeConnector, isConnected]);
 
   return (
     <>
       <Stack alignItems="center" direction="row">
-        <DialogTitle>
-          Connect Wallet
-          <Typography
-            component="span"
-            variant="caption"
-            display="block"
-            color="secondary.dark"
-          >
-            Polygon Network
-          </Typography>
-        </DialogTitle>
+        <DialogTitle>{t('connectWallet')}</DialogTitle>
       </Stack>
       <List>
         {connectors.map((x) => (

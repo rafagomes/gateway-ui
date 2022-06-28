@@ -37,11 +37,13 @@ export function ProfileTemplate({
   isAdmin,
   claimableCredentials,
 }: Props) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [credential, setCredential] = useState<Credentials | null>(null);
+  const [polygonURL, setPolygonURL] = useState<string | null>(null);
 
-  const handleOpen = (credential: Credentials) => {
+  const handleOpen = (credential: Credentials, polygonURL: string) => {
     setCredential(credential);
+    setPolygonURL(polygonURL);
     setOpen(true);
   };
   const handleClose = () => {
@@ -83,14 +85,14 @@ export function ProfileTemplate({
 
     console.log(`IPFS hash: ${ipfs}`);
 
-    const isMinted = await mint(`ipfs://${ipfs}`);
+    const { isMinted, polygonURL } = await mint(`ipfs://${ipfs}`);
 
     isMinted &&
       mintCredentialMutation.mutate(
         { id: credential.id },
         {
           onSuccess: () => {
-            handleOpen(credential);
+            handleOpen(credential, polygonURL);
           },
         }
       );
@@ -118,16 +120,13 @@ export function ProfileTemplate({
   const goToEarn = (credentialId) =>
     router.push(ROUTES.CREDENTIALS_EARN + credentialId);
 
-  const tmpUser = {
-    pfp: 'https://i.ibb.co/bzzgBfT/random-nft.png',
-  };
-
   return (
     <>
       <PocModalMinted
         open={open}
         handleClose={handleClose}
         credential={credential}
+        polygonURL={polygonURL}
         subsidised
       />
       <Paper
@@ -150,13 +149,15 @@ export function ProfileTemplate({
           <NavBarAvatar />
         </Box>
         <Avatar
-          src={tmpUser.pfp}
+          src={user.pfp.startsWith('http') ? user.pfp : '/images/logo.png'}
           sx={{
             width: 150,
             height: 150,
             top: '200px',
             left: '50px',
             border: '3px solid black',
+            objectFit: 'cover',
+            objectPosition: 'center',
           }}
         />
       </Paper>

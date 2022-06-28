@@ -1,31 +1,36 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { Button } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { Button, SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close'
+
 import { Credentials } from '../../../services/graphql/types.generated';
 import CredentialCard from '../../molecules/credential-card';
 
 /* It's a style object that is used to position the modal in the center of the screen. */
-const style = {
-  position: 'absolute' as const,
-  top: '60%',
-  left: '50%',
-  minWidth: '100%',
-  transform: 'translate(-50%, -50%)',
+const style: SxProps = {
+  // position: 'absolute' as const,
+  // top: '60%',
+  // left: '50%',
+  // minWidth: '100%',
+  // transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
   p: 3,
-  marginTop: '-80px',
+  minHeight: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  // marginTop: '-80px',
 };
 
 /* It's defining the props that the modal will take. */
 interface ModalProps {
   open: boolean;
   credential: Credentials | null;
+  polygonURL: string;
   subsidised?: boolean;
   handleClose: () => void;
 }
@@ -33,6 +38,7 @@ interface ModalProps {
 export default function PocModalMinted({
   open,
   credential,
+  polygonURL,
   subsidised = false,
   handleClose,
 }: ModalProps) {
@@ -49,49 +55,55 @@ export default function PocModalMinted({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Image
-            src="/favicon-512.png"
-            alt="gateway-logo"
-            height={40}
-            width={40}
-          />
+          <Box>
+            <Image
+              src="/favicon-512.png"
+              alt="gateway-logo"
+              height={40}
+              width={40}
+            />
 
-          <IconButton
-            aria-label="close"
-            onClick={() => router.push('/profile')}
-            sx={{
-              position: 'absolute',
-              right: 20,
-              top: 25,
-              color:"#fff",
-              background: "rgba(255, 255, 255, 0.15)",
-              borderRadius: "64px"
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{
+                position: 'absolute',
+                right: 20,
+                top: 25,
+                color: '#fff',
+                background: 'rgba(255, 255, 255, 0.15)',
+                borderRadius: '64px',
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              minHeight: '90vh',
+              justifyContent: 'center',
+              flex: 1,
             }}
           >
             <Box>
               <Typography
                 id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                fontSize={35}
+                variant="h3"
+                component="h3"
+                fontSize={56}
                 textAlign="center"
+                sx={{
+                  mb: 3,
+                }}
               >
                 Congrats your work is verified and on-chain.{' '}
               </Typography>
               {subsidised && (
                 <Typography
                   id="modal-modal-description"
-                  sx={{ mb: 1, textAlign: 'center', marginBottom: '20px' }}
+                  sx={{ mb: 6, textAlign: 'center' }}
                   fontSize={16}
                 >
                   Your NFT has been minted at cost free subsidized by{' '}
@@ -102,18 +114,41 @@ export default function PocModalMinted({
             <CredentialCard
               name={credential?.name}
               description={credential?.description}
+              sx={{
+                mb: 8,
+              }}
             />
-            <Button
-              variant="outlined"
-              size="small"
-              sx={{ margin: '20px 0 0 20px' }}
-              onClick={() => {
-                handleClose();
-                router.push('/profile');
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
               }}
             >
-              Back to Profile
-            </Button>
+              <Button
+                variant="contained"
+                size="medium"
+                sx={{
+                  mx: 2,
+                }}
+                href={polygonURL}
+                target="_blank"
+              >
+                Check Transaction
+              </Button>
+              <Button
+                variant="contained"
+                size="medium"
+                sx={{
+                  mx: 2,
+                }}
+                onClick={() => {
+                  handleClose();
+                  router.push('/profile');
+                }}
+              >
+                Back to Profile
+              </Button>
+            </Box>
           </Box>
         </Box>
       </Modal>

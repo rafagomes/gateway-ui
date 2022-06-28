@@ -16,8 +16,8 @@ import { Form } from './form';
 import { schema, NewCredentialSchema } from './schema';
 
 export function NewCredentialTemplate() {
-  const [open, setOpen] = useState(false);
-  const [credentialGroupId, setCredentialGroupId] = useState('');
+  const [open, setOpen] = useState<boolean>(false);
+  const [credentialGroupId, setCredentialGroupId] = useState<string>('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
