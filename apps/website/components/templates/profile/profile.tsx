@@ -29,12 +29,14 @@ import PocModalMinted from '../../organisms/poc-modal-minted/poc-modal-minted';
 type Props = {
   user: Partial<Users>;
   isAdmin: boolean;
+  createdCredentials: Array<Partial<Credentials>>;
   claimableCredentials: Array<Partial<Credentials>>;
 };
 
 export function ProfileTemplate({
   user,
   isAdmin,
+  createdCredentials,
   claimableCredentials,
 }: Props) {
   const [open, setOpen] = useState(false);
@@ -266,23 +268,12 @@ export function ProfileTemplate({
                   </Button>
                 )}
               </Box>
+              {/* Credentials earned */}
               <Grid container rowGap={2}>
-                {/* <Grid item xs={4}>
-                  <CredentialCard
-                    smaller
-                    uncomplete
-                    earn={() => router.push('/credentials/earn')}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <CredentialCard smaller pending />
-                </Grid>
-                <Grid item xs={4}>
-                  <CredentialCard smaller mintable mint={mintNFT} />
-                </Grid>
-                <Grid item xs={4}>
-                  <CredentialCard smaller isNFT />
-                </Grid> */}
+                <Box sx={{ width: '100%' }}>
+                  {(!!claimableCredentials.length ||
+                    !!user.credentials.length) && <h4>My Credentials</h4>}
+                </Box>
                 {claimableCredentials.map((credential) => (
                   <Grid item xs={4} key={credential.id}>
                     <CredentialCard
@@ -309,6 +300,24 @@ export function ProfileTemplate({
                       mintable={credential.status === 'to_mint'}
                       mint={() => mintNFT(credential)}
                       isNFT={credential.status === 'minted'}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+              {/* Credentials created */}
+              <Grid container rowGap={2}>
+                <Box sx={{ width: '100%' }}>
+                  {!!createdCredentials.length && <h4>Credentials Created</h4>}
+                </Box>
+                {createdCredentials.map((credential) => (
+                  <Grid item xs={4} key={credential.id}>
+                    <CredentialCard
+                      name={credential.name}
+                      description={credential.description}
+                      smaller
+                      view={() =>
+                        router.push(ROUTES.CREDENTIALS_VIEW + credential.id)
+                      }
                     />
                   </Grid>
                 ))}

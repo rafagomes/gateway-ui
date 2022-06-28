@@ -35,10 +35,17 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     }
   );
 
+  const createdCredentials = (
+    await gqlMethods(session.user).get_created_credentials({
+      user_id: session.user.id,
+    })
+  )?.me?.credential_groups;
+
   return {
     props: {
       user,
       isAdmin,
+      createdCredentials: createdCredentials || [],
       claimableCredentials: filteredClaimableCredentials,
     },
   };
@@ -47,6 +54,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 export default function Profile({
   user,
   isAdmin,
+  createdCredentials,
   claimableCredentials,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
@@ -54,6 +62,7 @@ export default function Profile({
       <ProfileTemplate
         user={user}
         isAdmin={isAdmin}
+        createdCredentials={createdCredentials}
         claimableCredentials={claimableCredentials}
       />
     </DashboardTemplate>
