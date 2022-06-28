@@ -39,6 +39,10 @@ export function ViewCredentialTemplate({ credentialInfo }) {
     name: '',
     description: '',
     status: '',
+    issuer: {
+      name: '',
+      pfp: '',
+    },
   });
   const [details, setDetails] = useState({});
   const [accomplishments, setAccomplishments] = useState([]);
@@ -50,6 +54,7 @@ export function ViewCredentialTemplate({ credentialInfo }) {
         name: credentialInfo['credentials_by_pk'].name,
         description: credentialInfo['credentials_by_pk'].description,
         status: credentialInfo['credentials_by_pk'].status,
+        issuer: credentialInfo['credentials_by_pk'].issuer,
       });
       setDetails(credentialInfo['credentials_by_pk'].details);
       setAccomplishments(credentialInfo['credentials_by_pk'].pow);
@@ -60,7 +65,6 @@ export function ViewCredentialTemplate({ credentialInfo }) {
 
   const credentialImgUrl =
     'https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png';
-  const randomNftUrl = 'https://i.ibb.co/bzzgBfT/random-nft.png';
 
   return (
     <Stack gap={6} p={TOKENS.CONTAINER_PX}>
@@ -87,8 +91,16 @@ export function ViewCredentialTemplate({ credentialInfo }) {
           Check profile
         </Button>
       </Box>
-      <Typography variant="h5" sx={{ display: 'block', color: '#fff', fontSize: '34px' ,marginBottom:'20px' }}
-                ml={{ xs: '0px', md: '92px' }}>
+      <Typography
+        variant="h5"
+        sx={{
+          display: 'block',
+          color: '#fff',
+          fontSize: '34px',
+          marginBottom: '20px',
+        }}
+        ml={{ xs: '0px', md: '92px' }}
+      >
         Shriram Chandra <br /> Proof of Credential
       </Typography>
       <Stack
@@ -104,14 +116,19 @@ export function ViewCredentialTemplate({ credentialInfo }) {
           sx={{ rowGap: '15px' }}
         >
           <Grid item xs={5}>
-            <Typography variant="h6" fontWeight="bold" 
-            sx={{ display: 'block', color: '#fff', fontSize: '24px' }}
-                ml={{ xs: '0px', md: '92px' }}>
+            <Typography
+              variant="h6"
+              fontWeight="bold"
+              sx={{ display: 'block', color: '#fff', fontSize: '24px' }}
+              ml={{ xs: '0px', md: '92px' }}
+            >
               Details
             </Typography>
-            <Typography variant="caption"
-            sx={{ display: 'block', fontSize: '14px' }}
-            ml={{ xs: '0px', md: '92px' }}>
+            <Typography
+              variant="caption"
+              sx={{ display: 'block', fontSize: '14px' }}
+              ml={{ xs: '0px', md: '92px' }}
+            >
               Basic Details of Credential
             </Typography>
           </Grid>
@@ -130,17 +147,20 @@ export function ViewCredentialTemplate({ credentialInfo }) {
                 sx={{
                   position: 'relative',
                   minHeight: '300px',
-                  marginTop:"10px"
+                  marginTop: '10px',
                 }}
                 ml={{ xs: '0px', sm: '32px' }}
                 minHeight={{ xs: '180px', md: '300px' }}
               >
-                <Typography variant="h6" sx={{ marginBottom: '10px',fontSize:'34px' }}>
+                <Typography
+                  variant="h6"
+                  sx={{ marginBottom: '10px', fontSize: '34px' }}
+                >
                   {credential.name}
                 </Typography>
                 <Chip label="Contributor" sx={{ marginBottom: '20px' }} />
                 <Box>
-                  <Typography variant="caption" sx={{ fontSize:'16px' }}>
+                  <Typography variant="caption" sx={{ fontSize: '16px' }}>
                     {credential.description}
                   </Typography>
                 </Box>
@@ -153,12 +173,17 @@ export function ViewCredentialTemplate({ credentialInfo }) {
                     alignItems: 'center',
                   }}
                 >
-                  <Typography sx={{ width: 'max-content', fontSize:'14px' }} variant="caption">
+                  <Typography
+                    sx={{ width: 'max-content', fontSize: '14px' }}
+                    variant="caption"
+                  >
                     Created by
                   </Typography>
                   <Chip
-                    avatar={<Avatar alt="chip avatar" src={randomNftUrl} />}
-                    label="Harisson Santos"
+                    avatar={
+                      <Avatar alt="chip avatar" src={credential.issuer.pfp} />
+                    }
+                    label={credential.issuer.name}
                     sx={{ marginLeft: '10px' }}
                   />
                 </Box>
@@ -237,7 +262,7 @@ export function ViewCredentialTemplate({ credentialInfo }) {
               </Typography>
             </Grid>
             {accomplishments.map((accomplishment, index) => (
-              <Grid item xs={4} key={index} sx={{paddingLeft:"87px"}}>
+              <Grid item xs={4} key={index} sx={{ paddingLeft: '87px' }}>
                 <Typography
                   variant="subtitle1"
                   fontWeight="bold"
@@ -247,7 +272,9 @@ export function ViewCredentialTemplate({ credentialInfo }) {
                     marginBottom: '10px',
                   }}
                 >
-                  <LooksOneIcon style={{ marginLeft: '-40px' ,marginRight:"15px"}} />
+                  <LooksOneIcon
+                    style={{ marginLeft: '-40px', marginRight: '15px' }}
+                  />
                   {accomplishment.title}
                 </Typography>
                 <Typography variant="caption">
@@ -257,11 +284,11 @@ export function ViewCredentialTemplate({ credentialInfo }) {
                   <Typography
                     variant="subtitle2"
                     fontWeight="bold"
-                    style={{ marginBottom: '20px' , fontSize:'16px'}}
+                    style={{ marginBottom: '20px', fontSize: '16px' }}
                   >
                     Proof of Work
                   </Typography>
-                  <Box style={{ marginLeft: '0px' ,marginRight:"15px"}}>
+                  <Box style={{ marginLeft: '0px', marginRight: '15px' }}>
                     <Typography
                       variant="subtitle2"
                       style={{ display: 'flex', alignItems: 'center' }}
@@ -269,11 +296,17 @@ export function ViewCredentialTemplate({ credentialInfo }) {
                       <ArticleIcon style={{ marginRight: '20px' }} />
                       {accomplishment.type}
                     </Typography>
-                    <Typography variant="caption" style={{marginLeft:"44px"}}>
+                    <Typography
+                      variant="caption"
+                      style={{ marginLeft: '44px' }}
+                    >
                       {accomplishment.description}
                     </Typography>
                     <br />
-                    <Typography variant="caption" style={{marginLeft:"44px"}}>
+                    <Typography
+                      variant="caption"
+                      style={{ marginLeft: '44px' }}
+                    >
                       {accomplishment.link}
                     </Typography>
                   </Box>

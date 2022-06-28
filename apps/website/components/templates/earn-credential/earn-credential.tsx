@@ -44,6 +44,10 @@ export function EarnCredentialTemplate({ credentialInfo }) {
     id: null,
     name: '',
     description: '',
+    issuer: {
+      name: '',
+      pfp: '',
+    },
   });
   const [open, setOpen] = useState(false);
   const [role, setRole] = useState('');
@@ -72,6 +76,7 @@ export function EarnCredentialTemplate({ credentialInfo }) {
         id: credentialInfo['credentials_by_pk'].id,
         name: credentialInfo['credentials_by_pk'].name,
         description: credentialInfo['credentials_by_pk'].description,
+        issuer: credentialInfo['credentials_by_pk'].issuer,
       });
     }
   }, [credentialInfo]);
@@ -280,8 +285,10 @@ export function EarnCredentialTemplate({ credentialInfo }) {
                     Created by
                   </Typography>
                   <Chip
-                    avatar={<Avatar alt="chip avatar" src={randomNftUrl} />}
-                    label="Harisson Santos"
+                    avatar={
+                      <Avatar alt="chip avatar" src={credential.issuer.pfp} />
+                    }
+                    label={credential.issuer.name}
                     sx={{ marginLeft: '10px', width: 'max-content' }}
                   />
                 </Box>
