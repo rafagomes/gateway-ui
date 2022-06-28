@@ -24,13 +24,20 @@ const config: IGraphQLProjects = {
               plugins: [
                 "typescript",
                 "typescript-operations",
-                "typescript-graphql-request"
+                "typescript-graphql-request",
+                "typescript-resolvers"
               ],
               config: {
                 scalars: {
                   "_text": "string"
                 },
-                avoidOptionals: true,
+                defaultMapper: "Partial<{T}>",
+                avoidOptionals: {
+                  field: true,
+                  inputValue: false,
+                  object: true,
+                  defaultValue: true
+                },
                 fetcher: "graphql-request"
               }
             }
