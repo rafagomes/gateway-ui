@@ -26,21 +26,6 @@ import CredentialCard from '../../molecules/credential-card';
 import { NavBarAvatar } from '../../organisms/navbar/navbar-avatar';
 import PocModalMinted from '../../organisms/poc-modal-minted/poc-modal-minted';
 
-const socials = [
-  {
-    icon: FaGithub,
-    value: 'https://github.com/Gateway-DAO',
-  },
-  {
-    icon: FaTwitter,
-    value: 'https://twitter.com/Gateway_xyz',
-  },
-  {
-    icon: FaDiscord,
-    value: 'https://discord.gg/3fFFFk5dBN',
-  },
-];
-
 type Props = {
   user: Partial<Users>;
   isAdmin: boolean;
@@ -135,32 +120,6 @@ export function ProfileTemplate({
 
   const tmpUser = {
     pfp: 'https://i.ibb.co/bzzgBfT/random-nft.png',
-    email_address: 'shriram@mygateway.xyz',
-    name: 'Shriram Chandra',
-    bio: 'You can write about your years of experience, industry, or skills. People also talk about their achievements or previous job experiences.',
-    username: 'shriram',
-    about:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
-    skills: [
-      'UX Design',
-      'UI Design',
-      'Branding',
-      'Product Strategy',
-      'Product Design',
-    ],
-    knowledges: [
-      'Web3',
-      'Blockchain',
-      'Cryptocurrency',
-      'Business Development',
-    ],
-    attitudes: [
-      'Pro-Active',
-      'Business Driven',
-      'Collaborative',
-      'Leadership',
-      'Innovative',
-    ],
   };
 
   return (
@@ -330,9 +289,6 @@ export function ProfileTemplate({
                       name={credential.name}
                       description={credential.description}
                       smaller
-                      view={() =>
-                        router.push(ROUTES.CREDENTIALS_VIEW + credential.id)
-                      }
                       claim={() => claimAndGoToEarn(credential.id)}
                       claimable
                     />
@@ -379,7 +335,7 @@ export function ProfileTemplate({
                 </Avatar>
               </Box>
               <div>
-                {tmpUser.skills?.map((skill, index) => {
+                {user.skills?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
@@ -413,7 +369,7 @@ export function ProfileTemplate({
                 </Avatar>
               </Box>
               <div>
-                {tmpUser.knowledges?.map((skill, index) => {
+                {user.knowledges?.map((skill, index) => {
                   return (
                     <Button
                       key={index}
@@ -447,7 +403,7 @@ export function ProfileTemplate({
                 </Avatar>
               </Box>
               <div>
-                {tmpUser.attitudes?.map((skill, index) => {
+                {user.attitudes?.map((skill, index) => {
                   return (
                     <Button
                       key={index}

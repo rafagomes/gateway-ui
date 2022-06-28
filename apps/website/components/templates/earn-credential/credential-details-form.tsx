@@ -1,23 +1,25 @@
-import { useFormContext } from "react-hook-form";
-import * as React from "react";
+import * as React from 'react';
+
+import { useFormContext } from 'react-hook-form';
+
 import {
   Checkbox,
   FormControlLabel,
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
+} from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 //date picker components
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { mockLevels } from "./__mock__";
-import { CredentialDetailsTypes } from "./credential-details-schema";
+import { mockLevels } from './__mock__';
+import { CredentialDetailsTypes } from './credential-details-schema';
 
 type Props = {
   isStillWorking: boolean;
@@ -81,7 +83,7 @@ export function CredentialDetailsForm({
         </FormControl>
         <Typography
           variant="caption"
-          sx={{ textTransform: "uppercase", display: "block" }}
+          sx={{ textTransform: 'uppercase', display: 'block' }}
         >
           Time period of contribution
         </Typography>
@@ -91,7 +93,7 @@ export function CredentialDetailsForm({
           label="Start date"
           inputFormat="dd-MM-yyyy"
           openTo="year"
-          views={["year", "month", "day"]}
+          views={['year', 'month', 'day']}
           value={startDate}
           onChange={(newValue) => {
             setStartDate(newValue);
@@ -106,14 +108,14 @@ export function CredentialDetailsForm({
         />
         <DatePicker
           disablePast
+          disabled={isStillWorking}
           label="End date"
           inputFormat="dd-MM-yyyy"
           openTo="year"
-          views={["year", "month", "day"]}
+          views={['year', 'month', 'day']}
           value={endDate}
           onChange={(newValue) => {
             setEndDate(newValue);
-            
           }}
           renderInput={(params) => (
             <TextField
