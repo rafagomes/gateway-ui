@@ -8,6 +8,7 @@ import { gqlMethods } from '../../../../services/api';
 
 interface CredentialInfoProps {
   id: string;
+  group_id?: string;
   name: string;
   description: string;
   status?: string;
@@ -51,6 +52,7 @@ export default function ViewCredential() {
           name: credentialInfo.name,
           description: credentialInfo.description,
           status: credentialInfo.status,
+          group_id: credentialInfo.group_id || credentialInfo.id,
           issuer: {
             id: credentialInfo?.admin?.id || credentialInfo?.issuer?.id,
             name: credentialInfo?.admin?.name || credentialInfo?.issuer?.name,

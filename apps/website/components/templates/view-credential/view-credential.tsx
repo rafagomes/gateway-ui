@@ -2,6 +2,8 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
+import { useQuery } from 'react-query';
+
 import { TOKENS } from '@gateway/theme';
 
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
@@ -17,9 +19,11 @@ import {
   Typography,
   Divider,
   Button,
+  AvatarGroup,
 } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
+import { gqlMethods } from '../../../services/api';
 
 const DetailsFieldset = ({ children }) => (
   <fieldset
@@ -37,11 +41,24 @@ export function ViewCredentialTemplate({ credential }) {
   const session = useSession();
   const router = useRouter();
 
-  const isIssuer = credential.issuer.id === session.data.user.id;
+  const isIssuer = credential.issuer.id === session.data?.user.id;
   const details = credential.details;
   const accomplishments = credential.pow;
   const credentialImgUrl =
     'https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png';
+
+  const holders = useQuery(
+    [credential.id, 'get-holders'],
+    () => {
+      if (!session.data.user) return;
+      return gqlMethods(session.data.user).get_credential_by_groupid({
+        group_id: credential.group_id,
+      });
+    },
+    {
+      enabled: !!session.data?.user,
+    }
+  ).data?.credentials;
 
   return (
     <Stack gap={6} p={TOKENS.CONTAINER_PX}>
@@ -146,23 +163,50 @@ export function ViewCredentialTemplate({ credential }) {
                     position: 'absolute',
                     bottom: '0',
                     display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
+                    flexDirection: 'column',
+                    alignItems: 'baseline',
                   }}
                 >
-                  <Typography
-                    sx={{ width: 'max-content', fontSize: '14px' }}
-                    variant="caption"
+                  <Stack
+                    direction={'row'}
+                    alignItems={'center'}
+                    sx={{ marginBottom: '10px' }}
                   >
-                    Created by
-                  </Typography>
-                  <Chip
-                    avatar={
-                      <Avatar alt="chip avatar" src={credential.issuer.pfp} />
-                    }
-                    label={credential.issuer.name}
-                    sx={{ marginLeft: '10px' }}
-                  />
+                    {holders?.length !== 0 && (
+                      <Typography
+                        sx={{
+                          width: 'max-content',
+                          fontSize: '14px',
+                          marginRight: '30px',
+                        }}
+                        variant="caption"
+                      >
+                        Holders
+                      </Typography>
+                    )}
+                    <AvatarGroup max={4}>
+                      {holders?.map(({ target }, index) => {
+                        const { name, username, pfp } = target;
+                        const alt = `${name} ${username}`;
+                        return <Avatar key={index} alt={alt} src={pfp} />;
+                      })}
+                    </AvatarGroup>
+                  </Stack>
+                  <Stack direction={'row'}>
+                    <Typography
+                      sx={{ width: 'max-content', fontSize: '14px' }}
+                      variant="caption"
+                    >
+                      Created by
+                    </Typography>
+                    <Chip
+                      avatar={
+                        <Avatar alt="chip avatar" src={credential.issuer.pfp} />
+                      }
+                      label={credential.issuer.name}
+                      sx={{ marginLeft: '10px' }}
+                    />
+                  </Stack>
                 </Box>
               </Box>
             </Stack>
