@@ -337,15 +337,19 @@ export function ViewCredentialTemplate({ credential }) {
                 ))}
             </Grid>
           )}
-        {(credential.status === 'to_complete' || 'null') && !isIssuer && (
-          <Button
-            variant="contained"
-            sx={{ margin: 'auto' }}
-            onClick={() => router.push(ROUTES.CREDENTIALS_EARN + credential.id)}
-          >
-            Complete Credential
-          </Button>
-        )}
+        {(credential.status === 'to_complete' ||
+          credential.status === undefined) &&
+          !isIssuer && (
+            <Button
+              variant="contained"
+              sx={{ margin: 'auto' }}
+              onClick={() =>
+                router.push(ROUTES.CREDENTIALS_EARN + credential.id)
+              }
+            >
+              Complete Credential
+            </Button>
+          )}
       </Stack>
       <Box alignSelf="flex-end" marginRight="100px">
         {(credential.status === 'pending' || 'to_mint' || 'minted') && (
