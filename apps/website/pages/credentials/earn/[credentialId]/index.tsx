@@ -6,14 +6,32 @@ import { useQuery } from 'react-query';
 import { EarnCredentialTemplate } from '../../../../components/templates/earn-credential';
 import { gqlMethods } from '../../../../services/api';
 
+interface CredentialInfoProps {
+  id: string;
+  name: string;
+  description: string;
+  status?: string;
+  admin?: {
+    name: string;
+    pfp: string;
+  };
+  issuer?: {
+    name: string;
+    pfp: string;
+  };
+  target?: {
+    name: string;
+  };
+}
+
 export default function EarnCredential() {
   const router = useRouter();
   const session = useSession();
 
   const { credentialId } = router.query;
 
-  const credentialQuery = useQuery(
-    ['get-credential'],
+  const credential = useQuery(
+    [credentialId, 'get-credential'],
     () => {
       if (!session.data.user) return;
       return gqlMethods(session.data.user).get_credential({
@@ -21,9 +39,29 @@ export default function EarnCredential() {
       });
     },
     {
-      enabled: !!session.data?.user,
+      enabled: !!session.data?.user && !!credentialId,
+      select: (data) => {
+        const credentialInfo: CredentialInfoProps =
+          data?.['credentials_by_pk'] ?? data?.['credential_group_by_pk'];
+
+        return {
+          id: credentialInfo.id,
+          name: credentialInfo.name,
+          description: credentialInfo.description,
+          status: credentialInfo.status,
+          issuer: {
+            name: credentialInfo?.admin?.name || credentialInfo?.issuer?.name,
+            pfp: credentialInfo?.admin?.pfp || credentialInfo?.issuer?.pfp,
+          },
+          target: {
+            name: credentialInfo?.target?.name || '',
+          },
+        };
+      },
     }
   );
 
-  return <EarnCredentialTemplate credentialInfo={credentialQuery.data} />;
+  if (!credential.data) return null;
+
+  return <EarnCredentialTemplate credential={credential.data} />;
 }

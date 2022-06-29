@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -33,37 +32,9 @@ const DetailsFieldset = ({ children }) => (
   </fieldset>
 );
 
-export function ViewCredentialTemplate({ credentialInfo }) {
-  const [credential, setCredential] = useState({
-    id: null,
-    name: '',
-    description: '',
-    status: '',
-    issuer: {
-      name: '',
-      pfp: '',
-    },
-    target: {
-      name: '',
-    },
-  });
-  const [details, setDetails] = useState({});
-  const [accomplishments, setAccomplishments] = useState([]);
-
-  useEffect(() => {
-    if (credentialInfo) {
-      setCredential({
-        id: credentialInfo['credentials_by_pk'].id,
-        name: credentialInfo['credentials_by_pk'].name,
-        description: credentialInfo['credentials_by_pk'].description,
-        status: credentialInfo['credentials_by_pk'].status,
-        issuer: credentialInfo['credentials_by_pk'].issuer,
-        target: credentialInfo['credentials_by_pk'].target,
-      });
-      setDetails(credentialInfo['credentials_by_pk'].details);
-      setAccomplishments(credentialInfo['credentials_by_pk'].pow);
-    }
-  }, [credentialInfo]);
+export function ViewCredentialTemplate({ credential }) {
+  const details = credential.details;
+  const accomplishments = credential.pow;
 
   const router = useRouter();
 
@@ -105,7 +76,7 @@ export function ViewCredentialTemplate({ credentialInfo }) {
         }}
         ml={{ xs: '0px', md: '92px' }}
       >
-        {credential.target.name} <br /> Proof of Credential
+        {credential?.target?.name} <br /> Proof of Credential
       </Typography>
       <Stack
         direction="column"
@@ -195,10 +166,9 @@ export function ViewCredentialTemplate({ credentialInfo }) {
             </Stack>
           </Grid>
         </Grid>
-        {(credential.status === 'pending' || 'to_mint' || 'minted') && (
-          <Divider light sx={{ width: '100%' }} />
-        )}
-        {(credential.status === 'pending' || 'to_mint' || 'minted') && (
+        {(credential.status === 'pending' || 'to_mint' || 'minted') &&
+          details && <Divider light sx={{ width: '100%' }} />}
+        {(credential.status === 'pending' || 'to_mint' || 'minted') && details && (
           // Your details
           <Grid
             container
@@ -223,103 +193,105 @@ export function ViewCredentialTemplate({ credentialInfo }) {
               </Typography>
             </Grid>
             <Grid item xs={4}>
-              {Object.keys(details).map(
-                (detailKey, index) =>
-                  details[detailKey] && (
-                    <DetailsFieldset key={index}>
-                      <legend>{detailKey}</legend>
-                      <Typography variant="h6" fontWeight="bold">
-                        {details[detailKey]}
-                      </Typography>
-                    </DetailsFieldset>
-                  )
-              )}
+              {details &&
+                Object.keys(details).map(
+                  (detailKey, index) =>
+                    details[detailKey] && (
+                      <DetailsFieldset key={index}>
+                        <legend>{detailKey}</legend>
+                        <Typography variant="h6" fontWeight="bold">
+                          {details[detailKey]}
+                        </Typography>
+                      </DetailsFieldset>
+                    )
+                )}
             </Grid>
           </Grid>
         )}
-        {(credential.status === 'pending' || 'to_mint' || 'minted') && (
-          <Divider light sx={{ width: '100%' }} />
-        )}
-        {(credential.status === 'pending' || 'to_mint' || 'minted') && (
-          <Grid
-            container
-            direction={{ xs: 'column', md: 'row' }}
-            sx={{ rowGap: '15px' }}
-          >
-            {/* Proudest Accomplishments */}
-            <Grid item xs={5}>
-              <Typography
-                variant="h6"
-                fontWeight="bold"
-                sx={{ display: 'block', color: '#fff', fontSize: '24px' }}
-                ml={{ xs: '0px', md: '92px' }}
-              >
-                Proudest Accomplishments
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{ display: 'block', fontSize: '14px' }}
-                ml={{ xs: '0px', md: '92px' }}
-              >
-                Tell the world about your greatest accomplishments and get it
-                verified!
-              </Typography>
-            </Grid>
-            {accomplishments.map((accomplishment, index) => (
-              <Grid item xs={4} key={index} sx={{ paddingLeft: '87px' }}>
+        {(credential.status === 'pending' || 'to_mint' || 'minted') &&
+          accomplishments && <Divider light sx={{ width: '100%' }} />}
+        {(credential.status === 'pending' || 'to_mint' || 'minted') &&
+          accomplishments && (
+            <Grid
+              container
+              direction={{ xs: 'column', md: 'row' }}
+              sx={{ rowGap: '15px' }}
+            >
+              {/* Proudest Accomplishments */}
+              <Grid item xs={5}>
                 <Typography
-                  variant="subtitle1"
+                  variant="h6"
                   fontWeight="bold"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    marginBottom: '10px',
-                  }}
+                  sx={{ display: 'block', color: '#fff', fontSize: '24px' }}
+                  ml={{ xs: '0px', md: '92px' }}
                 >
-                  <LooksOneIcon
-                    style={{ marginLeft: '-40px', marginRight: '15px' }}
-                  />
-                  {accomplishment.title}
+                  Proudest Accomplishments
                 </Typography>
-                <Typography variant="caption">
-                  {accomplishment.accomplishmentDescription}
+                <Typography
+                  variant="caption"
+                  sx={{ display: 'block', fontSize: '14px' }}
+                  ml={{ xs: '0px', md: '92px' }}
+                >
+                  Tell the world about your greatest accomplishments and get it
+                  verified!
                 </Typography>
-                <Box sx={{ marginTop: '30px' }}>
-                  <Typography
-                    variant="subtitle2"
-                    fontWeight="bold"
-                    style={{ marginBottom: '20px', fontSize: '16px' }}
-                  >
-                    Proof of Work
-                  </Typography>
-                  <Box style={{ marginLeft: '0px', marginRight: '15px' }}>
-                    <Typography
-                      variant="subtitle2"
-                      style={{ display: 'flex', alignItems: 'center' }}
-                    >
-                      <ArticleIcon style={{ marginRight: '20px' }} />
-                      {accomplishment.type}
-                    </Typography>
-                    <Typography
-                      variant="caption"
-                      style={{ marginLeft: '44px' }}
-                    >
-                      {accomplishment.description}
-                    </Typography>
-                    <br />
-                    <Typography
-                      variant="caption"
-                      style={{ marginLeft: '44px' }}
-                    >
-                      {accomplishment.link}
-                    </Typography>
-                  </Box>
-                </Box>
               </Grid>
-            ))}
-          </Grid>
-        )}
-        {credential.status === 'to_complete' && (
+              {accomplishments &&
+                accomplishments.map((accomplishment, index) => (
+                  <Grid item xs={4} key={index} sx={{ paddingLeft: '87px' }}>
+                    <Typography
+                      variant="subtitle1"
+                      fontWeight="bold"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      <LooksOneIcon
+                        style={{ marginLeft: '-40px', marginRight: '15px' }}
+                      />
+                      {accomplishment.title}
+                    </Typography>
+                    <Typography variant="caption">
+                      {accomplishment.accomplishmentDescription}
+                    </Typography>
+                    <Box sx={{ marginTop: '30px' }}>
+                      <Typography
+                        variant="subtitle2"
+                        fontWeight="bold"
+                        style={{ marginBottom: '20px', fontSize: '16px' }}
+                      >
+                        Proof of Work
+                      </Typography>
+                      <Box style={{ marginLeft: '0px', marginRight: '15px' }}>
+                        <Typography
+                          variant="subtitle2"
+                          style={{ display: 'flex', alignItems: 'center' }}
+                        >
+                          <ArticleIcon style={{ marginRight: '20px' }} />
+                          {accomplishment.type}
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          style={{ marginLeft: '44px' }}
+                        >
+                          {accomplishment.description}
+                        </Typography>
+                        <br />
+                        <Typography
+                          variant="caption"
+                          style={{ marginLeft: '44px' }}
+                        >
+                          {accomplishment.link}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Grid>
+                ))}
+            </Grid>
+          )}
+        {(credential.status === 'to_complete' || 'null') && (
           <Button
             variant="contained"
             sx={{ margin: 'auto' }}
