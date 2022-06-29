@@ -1,3 +1,4 @@
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -33,11 +34,12 @@ const DetailsFieldset = ({ children }) => (
 );
 
 export function ViewCredentialTemplate({ credential }) {
-  const details = credential.details;
-  const accomplishments = credential.pow;
-
+  const session = useSession();
   const router = useRouter();
 
+  const isIssuer = credential.issuer.id === session.data.user.id;
+  const details = credential.details;
+  const accomplishments = credential.pow;
   const credentialImgUrl =
     'https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png';
 
@@ -291,7 +293,7 @@ export function ViewCredentialTemplate({ credential }) {
                 ))}
             </Grid>
           )}
-        {(credential.status === 'to_complete' || 'null') && (
+        {(credential.status === 'to_complete' || 'null') && !isIssuer && (
           <Button
             variant="contained"
             sx={{ margin: 'auto' }}
