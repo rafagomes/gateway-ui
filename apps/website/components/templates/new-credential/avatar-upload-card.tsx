@@ -28,6 +28,7 @@ export function AvatarUploadCard() {
       sx={{
         border: 1,
         borderColor: 'rgba(255,255,255,.12)',
+        order:{ xs: '2', md: '3'},
       }}
     >
       <CardMedia

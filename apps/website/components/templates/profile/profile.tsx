@@ -280,6 +280,9 @@ export function ProfileTemplate({
                     <CredentialCard
                       name={credential.name}
                       description={credential.description}
+                      view={() =>
+                        router.push(ROUTES.CREDENTIALS_VIEW + credential.id)
+                      }
                       smaller
                       claim={() => claimAndGoToEarn(credential.id)}
                       claimable

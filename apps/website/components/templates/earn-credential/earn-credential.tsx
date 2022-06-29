@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -36,22 +36,10 @@ import {
   CredentialDetailsTypes,
 } from './credential-details-schema';
 
-export function EarnCredentialTemplate({ credentialInfo }) {
+export function EarnCredentialTemplate({ credential }) {
   const session = useSession();
   const router = useRouter();
 
-  const [credential, setCredential] = useState({
-    id: null,
-    name: '',
-    description: '',
-    target: {
-      name: '',
-    },
-    issuer: {
-      name: '',
-      pfp: '',
-    },
-  });
   const [open, setOpen] = useState(false);
   const [role, setRole] = useState('');
   const [commitmentLevel, setCommitmentLevel] = useState('');
@@ -72,18 +60,6 @@ export function EarnCredentialTemplate({ credentialInfo }) {
   ]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  useEffect(() => {
-    if (credentialInfo) {
-      setCredential({
-        id: credentialInfo['credentials_by_pk'].id,
-        name: credentialInfo['credentials_by_pk'].name,
-        description: credentialInfo['credentials_by_pk'].description,
-        issuer: credentialInfo['credentials_by_pk'].issuer,
-        target: credentialInfo['credentials_by_pk'].target,
-      });
-    }
-  }, [credentialInfo]);
 
   const credentialDetailsMethods = useForm<CredentialDetailsTypes>({
     resolver: yupResolver(credentialDetailsSchema),
