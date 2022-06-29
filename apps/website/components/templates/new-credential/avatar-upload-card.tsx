@@ -28,7 +28,7 @@ export function AvatarUploadCard() {
       sx={{
         border: 1,
         borderColor: 'rgba(255,255,255,.12)',
-        order:{ xs: '2', md: '3'},
+        order: { xs: '2', md: '3' },
       }}
     >
       <CardMedia
@@ -42,7 +42,7 @@ export function AvatarUploadCard() {
         src="https://images.unsplash.com/photo-1650943574955-ac02c65cfc71?w=500"
       />
       <CardHeader
-        sx={{wordBreak:"break-word",maxWidth:'300px'}}
+        sx={{ wordBreak: 'break-word', maxWidth: '300px' }}
         title={showIfNotEmpty(name, 'Title')}
         subheader={showIfNotEmpty(description, 'Description')}
       />

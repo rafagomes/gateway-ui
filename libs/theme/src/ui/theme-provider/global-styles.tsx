@@ -9,6 +9,9 @@ export const GlobalStyles = () => (
       body: {
         padding: 0,
       },
+      '&:-webkit-autofill': {
+        transitionDelay: '9999s',
+      },
     }}
   />
 );
