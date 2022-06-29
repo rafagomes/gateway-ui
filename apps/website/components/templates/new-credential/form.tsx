@@ -2,12 +2,13 @@ import { useRouter } from 'next/router';
 
 import { useFormContext } from 'react-hook-form';
 
-import { Button, Stack, TextField } from '@mui/material';
+import { Button, Chip, Stack, TextField } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
+import WalletInput from '../../molecules/wallet-input';
 import { mockCategories } from './__mock__';
 import { NewCredentialSchema } from './schema';
 
@@ -16,14 +17,17 @@ import { NewCredentialSchema } from './schema';
 /* FIXME: Select label background on focus */
 type Props = {
   onSubmit: (data?: NewCredentialSchema) => void;
+  validateWallets: (wallets: string[]) => Promise<boolean>;
 };
-export function Form({ onSubmit }: Props) {
+
+export function Form({ validateWallets, onSubmit }: Props) {
   const router = useRouter();
 
   const {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useFormContext<NewCredentialSchema>();
 
   return (
@@ -66,19 +70,25 @@ export function Form({ onSubmit }: Props) {
         error={!!errors.description}
         helperText={errors.description?.message}
       />
-      {/* NOTE: validate each line with https://github.com/Swyftx/crypto-address-validator */}
-      <TextField
-        required
-        label="Wallets Adressess"
+      <WalletInput
+        label="Wallet Adressess"
         id="wallets"
         multiline
-        minRows={3}
-        {...register('wallets')}
+        name="wallets"
         error={!!errors.wallets}
+        errors={errors.wallets}
         helperText={
-          'Enter one address per line' +
-          (errors.wallets ? `\n${errors.wallets?.message}` : '')
+          errors.wallets
+            ? 'Invalid wallet(s) added'
+            : 'Enter one address per line'
         }
+        sx={{
+          width: '100%',
+        }}
+        set={(wallets: string[]) => {
+          setValue('wallets', wallets);
+          validateWallets(wallets);
+        }}
       />
       <Stack
         direction="row-reverse"
