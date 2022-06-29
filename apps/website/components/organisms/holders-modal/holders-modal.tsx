@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Grid,
   List,
   ListItem,
@@ -51,6 +52,14 @@ export default function HoldersModal({ holders, open, handleClose }) {
             })}
           </List>
         </Grid>
+        <Button
+          variant="contained"
+          size="small"
+          sx={{ width: '100%' }}
+          onClick={handleClose}
+        >
+          Close
+        </Button>
       </Box>
     </Modal>
   );

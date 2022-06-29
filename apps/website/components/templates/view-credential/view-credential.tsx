@@ -196,6 +196,7 @@ export function ViewCredentialTemplate({ credential }) {
                       </Typography>
                     )}
                     <AvatarGroup
+                      spacing={15}
                       max={4}
                       onClick={() => showHolders()}
                       sx={{ cursor: 'pointer' }}
