@@ -96,7 +96,11 @@ export function Form({ validateWallets, onSubmit }: Props) {
         gap={1}
         sx={{ mt: 2 }}
       >
-        <Button variant="contained" type="submit">
+        <Button
+          variant="contained"
+          type="submit"
+          disabled={Object.keys(errors).length > 0}
+        >
           Submit
         </Button>
         <Button

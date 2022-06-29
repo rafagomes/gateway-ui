@@ -47,7 +47,10 @@ export default function CredentialCard({
   };
 
   return (
-    <Card sx={{ maxWidth: smaller ? '250px' : '345px', ...sx }}>
+    <Card
+      sx={{ maxWidth: smaller ? '250px' : '345px', ...sx }}
+      {...((pending || mintable || isNFT) && { title: 'View details' })}
+    >
       <CardMedia
         component="img"
         image="https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png"
