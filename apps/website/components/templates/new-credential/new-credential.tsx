@@ -75,7 +75,8 @@ export function NewCredentialTemplate() {
     updateMutation.mutate(
       {
         ...data,
-        image: '',
+        image:
+          'https://images.unsplash.com/photo-1650943574955-ac02c65cfc71?w=500',
         wallets: data.wallets,
       },
       {
@@ -97,12 +98,12 @@ export function NewCredentialTemplate() {
       />
       <Typography variant="h4">Create Proof of Credential</Typography>
       <Stack
-         justifyContent="space-between"
-         alignItems="flex-start"
-         gap={6}
-         direction={{ xs: 'column', md: 'row' }}
+        justifyContent="space-between"
+        alignItems="flex-start"
+        gap={6}
+        direction={{ xs: 'column', md: 'row' }}
       >
-         <Box width={{ xs: '100%', md: '25%' }} order={{ xs: '1', md: '1'}}>
+        <Box width={{ xs: '100%', md: '25%' }} order={{ xs: '1', md: '1' }}>
           <Typography variant="h5">Details</Typography>
           {/* <Typography variant="caption">
             Use typography to present your design and content as clearly and
@@ -110,7 +111,7 @@ export function NewCredentialTemplate() {
           </Typography> */}
         </Box>
         <FormProvider {...methods}>
-        <Box width={{ xs: '100%', md: '25%' }} order={{ xs: '3', md: '2'}}>
+          <Box width={{ xs: '100%', md: '25%' }} order={{ xs: '3', md: '2' }}>
             <Form onSubmit={onSubmit} validateWallets={validateWallets} />
           </Box>
           <AvatarUploadCard />
