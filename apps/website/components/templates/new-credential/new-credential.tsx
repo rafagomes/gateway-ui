@@ -97,12 +97,12 @@ export function NewCredentialTemplate() {
       />
       <Typography variant="h4">Create Proof of Credential</Typography>
       <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="flex-start"
-        gap={6}
+         justifyContent="space-between"
+         alignItems="flex-start"
+         gap={6}
+         direction={{ xs: 'column', md: 'row' }}
       >
-        <Box sx={{ width: '25%' }}>
+         <Box width={{ xs: '100%', md: '25%' }} order={{ xs: '1', md: '1'}}>
           <Typography variant="h5">Details</Typography>
           {/* <Typography variant="caption">
             Use typography to present your design and content as clearly and
@@ -110,7 +110,7 @@ export function NewCredentialTemplate() {
           </Typography> */}
         </Box>
         <FormProvider {...methods}>
-          <Box sx={{ width: '25%' }}>
+        <Box width={{ xs: '100%', md: '25%' }} order={{ xs: '3', md: '2'}}>
             <Form onSubmit={onSubmit} validateWallets={validateWallets} />
           </Box>
           <AvatarUploadCard />
