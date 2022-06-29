@@ -1,6 +1,7 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { useQuery } from 'react-query';
 
@@ -24,6 +25,7 @@ import {
 
 import { ROUTES } from '../../../constants/routes';
 import { gqlMethods } from '../../../services/api';
+import HoldersModal from '../../organisms/holders-modal/holders-modal';
 
 const DetailsFieldset = ({ children }) => (
   <fieldset
@@ -41,13 +43,18 @@ export function ViewCredentialTemplate({ credential }) {
   const session = useSession();
   const router = useRouter();
 
+  const [holders, setHolders] = useState([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const showHolders = () => setOpen(true);
+  const hideHolders = () => setOpen(false);
+
   const isIssuer = credential.issuer.id === session.data?.user.id;
   const details = credential.details;
   const accomplishments = credential.pow;
   const credentialImgUrl =
     'https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png';
 
-  const holders = useQuery(
+  useQuery(
     [credential.id, 'get-holders'],
     () => {
       if (!session.data.user) return;
@@ -57,11 +64,15 @@ export function ViewCredentialTemplate({ credential }) {
     },
     {
       enabled: !!session.data?.user,
+      onSuccess(data) {
+        setHolders(data.credentials);
+      },
     }
-  ).data?.credentials;
+  );
 
   return (
     <Stack gap={6} p={TOKENS.CONTAINER_PX}>
+      <HoldersModal open={open} handleClose={hideHolders} holders={holders} />
       <Box>
         <Image
           src="/favicon-512.png"
@@ -184,7 +195,11 @@ export function ViewCredentialTemplate({ credential }) {
                         Holders
                       </Typography>
                     )}
-                    <AvatarGroup max={4}>
+                    <AvatarGroup
+                      max={4}
+                      onClick={() => showHolders()}
+                      sx={{ cursor: 'pointer' }}
+                    >
                       {holders?.map(({ target }, index) => {
                         const { name, username, pfp } = target;
                         const alt = `${name} ${username}`;
