@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useMutation } from 'react-query';
+import { useProvider } from 'wagmi';
 
 import { TOKENS } from '@gateway/theme';
 
@@ -18,11 +19,16 @@ import { schema, NewCredentialSchema } from './schema';
 export function NewCredentialTemplate() {
   const [open, setOpen] = useState<boolean>(false);
   const [credentialGroupId, setCredentialGroupId] = useState<string>('');
+  const provider = useProvider();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const methods = useForm<NewCredentialSchema>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      wallets: [],
+    },
   });
 
   const session = useSession();
@@ -32,14 +38,45 @@ export function NewCredentialTemplate() {
     session.data?.user && gqlMethods(session.data.user).create_credential_group
   );
 
-  const onSubmit = (data: NewCredentialSchema) => {
-    const parsedWallets: Array<string> = data.wallets.split('\n');
+  const validateWallets = async (wallets: string[]): Promise<boolean> => {
+    // Validate wallets
+    const errors = await Promise.all(
+      wallets.map(async (wallet, index) => {
+        if (!wallet.match(/^0x[0-9a-fA-F]{40}$/)) {
+          const ens = await provider.resolveName(wallet);
+
+          if (ens == null) {
+            methods.setError(`wallets.${index}`, {
+              message: `${wallet} is not a valid wallet address`,
+            });
+            return true;
+          }
+        }
+
+        return false;
+      })
+    );
+
+    if (errors.includes(true)) {
+      return false;
+    } else {
+      methods.clearErrors();
+      return true;
+    }
+  };
+
+  const onSubmit = async (data: NewCredentialSchema) => {
+    const isValid = await validateWallets(data.wallets);
+
+    if (!isValid) {
+      return;
+    }
 
     updateMutation.mutate(
       {
         ...data,
         image: '',
-        wallets: parsedWallets,
+        wallets: data.wallets,
       },
       {
         onSuccess: (response) => {
@@ -60,12 +97,12 @@ export function NewCredentialTemplate() {
       />
       <Typography variant="h4">Create Proof of Credential</Typography>
       <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="flex-start"
-        gap={6}
+         justifyContent="space-between"
+         alignItems="flex-start"
+         gap={6}
+         direction={{ xs: 'column', md: 'row' }}
       >
-        <Box sx={{ width: '25%' }}>
+         <Box width={{ xs: '100%', md: '25%' }} order={{ xs: '1', md: '1'}}>
           <Typography variant="h5">Details</Typography>
           {/* <Typography variant="caption">
             Use typography to present your design and content as clearly and
@@ -73,8 +110,8 @@ export function NewCredentialTemplate() {
           </Typography> */}
         </Box>
         <FormProvider {...methods}>
-          <Box sx={{ width: '25%' }}>
-            <Form onSubmit={onSubmit} />
+        <Box width={{ xs: '100%', md: '25%' }} order={{ xs: '3', md: '2'}}>
+            <Form onSubmit={onSubmit} validateWallets={validateWallets} />
           </Box>
           <AvatarUploadCard />
         </FormProvider>

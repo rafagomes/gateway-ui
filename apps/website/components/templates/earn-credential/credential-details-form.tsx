@@ -140,18 +140,6 @@ export function CredentialDetailsForm({
           }
           label="I'm currently working on this role"
         />
-        {/* Responsibilities */}
-        <TextField
-          required
-          label="Day to day responsibilities"
-          id="responsibilities"
-          multiline
-          minRows={4}
-          onChange={(e) => onResponsibilitiesUpdate(e.target.value)}
-          //{...register('responsibilities')}
-          error={!!errors.responsibilities}
-          helperText={errors.responsibilities?.message}
-        />
       </Stack>
     </LocalizationProvider>
   );
