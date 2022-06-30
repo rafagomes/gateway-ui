@@ -19,11 +19,11 @@ import { useAuth } from '../../../providers/auth';
 import { Users } from '../../../services/graphql/types.generated';
 
 interface Props {
-  user: Partial<Users>;
+  user?: Partial<Users>;
 }
 
 /* TODO: Refactor */
-export function NavBarAvatar({ user }: Props) {
+export async function NavBarAvatar({ user }: Props) {
   const { element, isOpen, onClose, onOpen } = useMenu();
   /*   const onChangeLanguage = useCallback(
     (lang: string) => async () => {
@@ -39,6 +39,7 @@ export function NavBarAvatar({ user }: Props) {
     },
     [onClose]
   );
+
   const { onSignOut } = useAuth();
 
   return (
@@ -70,7 +71,7 @@ export function NavBarAvatar({ user }: Props) {
               },
             }}
           >
-            <Avatar src={user.pfp}>{user.name[0]}</Avatar>
+            <Avatar src={user?.pfp}>{user.name[0]}</Avatar>
           </Badge>
         </IconButton>
       </Tooltip>
