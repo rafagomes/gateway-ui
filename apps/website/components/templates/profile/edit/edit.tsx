@@ -32,13 +32,25 @@ export function EditProfileTemplate({ user }: Props) {
     }
   );
 
-  const onSubmit = (data: EditUserSchema) => {
+  const imageUploadMutation = useMutation(
+    'uploadImage',
+    session.data?.user && gqlMethods(session.data.user).upload_image
+  );
+
+  const onSubmit = async (data: EditUserSchema) => {
     // TODO: Image upload
+    const upload = await imageUploadMutation.mutateAsync({
+      base64: data.pfp,
+      name: 'pfp image',
+    });
+
     updateMutation.mutate(
       {
         id: user.id,
-        pfp: 'pfpurl',
         ...data,
+        pfp:
+          'https://api.staging.mygateway.xyz/storage/file?id=' +
+          upload.upload_image.file.id,
         discord_id: null,
       },
       {

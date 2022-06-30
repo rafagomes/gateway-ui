@@ -62,6 +62,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useFormContext<EditUserSchema>();
 
   const router = useRouter();
@@ -69,16 +70,12 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
 
   const [name, setName] = useState(userData.name || '');
   const [username, setUsername] = useState(userData.username || '');
+  const [image, setImage] = useState(userData.pfp || '');
   const [about, setAbout] = useState(userData.about || '');
   const [email, setEmail] = useState(userData.email_address || '');
-  const [image, setImage] = useState('/images/home.png');
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
-  useEffect(() => {
-    setImage(window.localStorage.getItem('image'));
-  }, []);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -378,7 +375,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
                       onChange={(e) => {
                         readFileDataAsBase64(e).then((data: string) => {
                           setImage(data);
-                          window.localStorage.setItem('image', data);
+                          setValue('pfp', data);
                         });
                       }}
                     />
@@ -391,8 +388,8 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
                   </MenuItem>
                   <MenuItem
                     onClick={() => {
-                      window.localStorage.removeItem('image');
-                      window.location.reload();
+                      setImage('');
+                      setValue('pfp', '');
                     }}
                   >
                     Remove Photo

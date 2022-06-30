@@ -318,6 +318,8 @@ export function ProfileTemplate({
                     <CredentialCard
                       name={credential.name}
                       description={credential.description}
+                      image={credential.image}
+                      categories={credential.categories}
                       smaller
                       view={() =>
                         router.push(ROUTES.CREDENTIALS_VIEW + credential.id)

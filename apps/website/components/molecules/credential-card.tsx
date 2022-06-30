@@ -11,6 +11,7 @@ interface CredentialCardProps {
   name: string;
   description: string;
   categories?: string[];
+  image?: string;
   smaller?: boolean;
   claimable?: boolean;
   to_complete?: boolean;
@@ -28,6 +29,7 @@ export default function CredentialCard({
   name,
   description,
   categories = [],
+  image = 'https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png',
   smaller,
   claimable,
   to_complete,
@@ -55,7 +57,7 @@ export default function CredentialCard({
     >
       <CardMedia
         component="img"
-        image="https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png"
+        image={image}
         alt="credential image"
         sx={{ cursor: 'pointer' }}
         onClick={view}

@@ -50,6 +50,7 @@ export default function PocModalCreated({
     description: '',
     categories: [],
     slug: '',
+    image: '',
   });
   const [url, setURL] = useState<string | null>(null);
 
@@ -80,6 +81,7 @@ export default function PocModalCreated({
           description: result.data.credential_group_by_pk.description,
           categories: [result.data.credential_group_by_pk.category],
           slug: result.data.credential_group_by_pk.slug,
+          image: result.data.credential_group_by_pk.image,
         });
 
         setURL(
@@ -166,6 +168,8 @@ export default function PocModalCreated({
             <CredentialCard
               name={credential.name}
               description={credential.description}
+              image={credential.image}
+              categories={credential.categories}
               sx={{
                 mb: 8,
               }}

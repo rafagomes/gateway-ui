@@ -10,6 +10,7 @@ import { TOKENS } from '@gateway/theme';
 
 import { Box, Stack, Typography } from '@mui/material';
 
+import { usePinata } from '../../../hooks/usePinata';
 import { gqlMethods } from '../../../services/api';
 import PocModalCreated from '../../organisms/poc-modal-created/poc-modal-created';
 import { AvatarUploadCard } from './avatar-upload-card';
@@ -32,6 +33,7 @@ export function NewCredentialTemplate() {
   });
 
   const session = useSession();
+  const { uploadFileToIPFS } = usePinata();
 
   const updateMutation = useMutation(
     'updateCredential',
@@ -72,12 +74,19 @@ export function NewCredentialTemplate() {
       return;
     }
 
+    // Upload image to IPFS
+    const res = await fetch(data.image);
+    const blob = await res.blob();
+    const form = new FormData();
+    form.append('file', blob);
+
+    const imageHash = await uploadFileToIPFS(form);
+
     updateMutation.mutate(
       {
         ...data,
-        image:
-          'https://images.unsplash.com/photo-1650943574955-ac02c65cfc71?w=500',
         wallets: data.wallets,
+        image: 'https://ipfs.mygateway.xyz/ipfs/' + imageHash,
       },
       {
         onSuccess: (response) => {

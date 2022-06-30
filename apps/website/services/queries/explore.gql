@@ -6,10 +6,10 @@ query get_explore($id: uuid!) {
 
   gates {
     id
-    gate_name
+    title
     description
     categories
-    badge
+    image
     dao {
       id
       logo_url
