@@ -18,6 +18,8 @@ export default function Claim() {
   const [credential, setCredential] = useState({
     name: '',
     description: '',
+    image: '',
+    categories: []
   });
 
   const router = useRouter();
@@ -26,7 +28,7 @@ export default function Claim() {
   useQuery(
     ['get-credential-group-by-slug'],
     () => {
-      return gqlAnonMethods.get_credential_group_info_by_slug({ slug });
+      return gqlAnonMethods.get_credential_group_info_by_slug({ slug: slug as string });
     },
     {
       onSuccess: (data) =>
