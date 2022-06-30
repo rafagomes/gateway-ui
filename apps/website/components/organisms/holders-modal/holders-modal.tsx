@@ -46,7 +46,7 @@ export default function HoldersModal({ holders, open, handleClose }) {
                   <ListItemAvatar>
                     <Avatar alt={alt} src={pfp} />
                   </ListItemAvatar>
-                  <ListItemText primary={name} secondary={username} />
+                  <ListItemText sx={{wordBreak: 'break-all'}} primary={name} secondary={username} />
                 </ListItem>
               );
             })}
