@@ -19,34 +19,15 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { mockLevels } from './__mock__';
-import { CredentialDetailsTypes } from './credential-details-schema';
 
-type Props = {
-  isStillWorking: boolean;
-  onRoleUpdate: (value: string) => void;
-  onCommitmentLevelUpdate: (value: string) => void;
-  onStartDateUpdate: (value: string) => void;
-  onEndDateUpdate: (value: string) => void;
-  onIsStillWorkingUpdate: (value: boolean) => void;
-  onResponsibilitiesUpdate: (value: string) => void;
-};
-
-export function CredentialDetailsForm({
-  isStillWorking,
-  onRoleUpdate,
-  onCommitmentLevelUpdate,
-  onStartDateUpdate,
-  onEndDateUpdate,
-  onIsStillWorkingUpdate,
-  onResponsibilitiesUpdate,
-}: Props) {
+export function CredentialDetailsForm() {
   const {
-    //register,
+    register,
     formState: { errors },
-  } = useFormContext<CredentialDetailsTypes>();
-  //date picker states
-  const [startDate, setStartDate] = React.useState(new Date());
-  const [endDate, setEndDate] = React.useState(new Date());
+    watch,
+    setValue,
+  } = useFormContext();
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Stack direction="column" gap={2}>
@@ -55,21 +36,17 @@ export function CredentialDetailsForm({
           required
           label="Role"
           id="role"
-          onChange={(e) => onRoleUpdate(e.target.value)}
-          //{...register('role')}
+          {...register('role')}
           error={!!errors.role}
           helperText={errors.role?.message}
         />
         {/* Level of commitment */}
         <FormControl fullWidth>
-          <InputLabel htmlFor="commitment_level">
-            Level of commitment
-          </InputLabel>
+          <InputLabel htmlFor="commitmentLevel">Level of commitment</InputLabel>
           <Select
-            id="commitment_level"
-            onChange={(e) => onCommitmentLevelUpdate(e.target.value.toString())}
+            id="commitmentLevel"
             label="Level of commitment"
-            //{...register('commitment_level')}
+            {...register('commitmentLevel')}
           >
             <MenuItem value="">
               <em>None</em>
@@ -94,35 +71,35 @@ export function CredentialDetailsForm({
           inputFormat="dd-MM-yyyy"
           openTo="year"
           views={['year', 'month', 'day']}
-          value={startDate}
-          onChange={(newValue) => {
-            setStartDate(newValue);
+          value={watch('startDate')}
+          onChange={(date) => {
+            setValue('startDate', date);
           }}
           renderInput={(params) => (
             <TextField
-              error={!!errors.start_date}
-              helperText={errors.start_date?.message}
+              error={!!errors.startDate}
+              helperText={errors.startDate?.message}
               {...params}
             />
           )}
         />
         <DatePicker
           disablePast
-          disabled={isStillWorking}
+          disabled={watch('isStillWorking')}
           label="End date"
           inputFormat="dd-MM-yyyy"
           openTo="year"
           views={['year', 'month', 'day']}
-          value={endDate}
-          onChange={(newValue) => {
-            setEndDate(newValue);
+          onChange={(date) => {
+            setValue('endDate', date);
           }}
+          value={watch('endDate')}
           renderInput={(params) => (
             <TextField
-              disabled={isStillWorking}
-              id="end_date"
-              error={!!errors.end_date}
-              helperText={errors.end_date?.message}
+              disabled={watch('isStillWorking')}
+              id="endDate"
+              error={!!errors.endDate}
+              helperText={errors.endDate?.message}
               {...params}
             />
           )}
@@ -130,12 +107,9 @@ export function CredentialDetailsForm({
         <FormControlLabel
           control={
             <Checkbox
-              name="currently_working"
-              checked={isStillWorking}
-              onChange={(e) => {
-                onIsStillWorkingUpdate(!!e.target.checked);
-              }}
-              //{...register('currently_working')}
+              name="isStillWorking"
+              checked={watch('isStillWorking')}
+              {...register('isStillWorking')}
             />
           }
           label="I'm currently working on this role"

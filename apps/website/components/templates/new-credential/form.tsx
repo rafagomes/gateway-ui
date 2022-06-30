@@ -80,7 +80,7 @@ export function Form({ validateWallets, onSubmit }: Props) {
         helperText={
           errors.wallets
             ? 'Invalid wallet(s) added'
-            : 'Enter one address per line'
+            : 'Press <Enter> to add the wallet'
         }
         sx={{
           width: '100%',

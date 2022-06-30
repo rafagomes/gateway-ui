@@ -13,17 +13,11 @@ import CredentialCard from '../../molecules/credential-card';
 
 /* It's a style object that is used to position the modal in the center of the screen. */
 const style: SxProps = {
-  // position: 'absolute' as const,
-  // top: '60%',
-  // left: '50%',
-  // minWidth: '100%',
-  // transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
   p: 3,
   minHeight: '100%',
   display: 'flex',
   flexDirection: 'column',
-  // marginTop: '-80px',
 };
 
 /* It's defining the props that the modal will take. */
@@ -92,7 +86,7 @@ export default function PocModalMinted({
                 id="modal-modal-title"
                 variant="h3"
                 component="h3"
-                fontSize={56}
+                fontSize={48}
                 textAlign="center"
                 sx={{
                   mb: 3,
@@ -106,7 +100,7 @@ export default function PocModalMinted({
                   sx={{ mb: 6, textAlign: 'center' }}
                   fontSize={16}
                 >
-                  Your NFT has been minted at cost free subsidized by{' '}
+                  Your NFT has been minted at cost free by{' '}
                   <span style={{ color: '#D083FF' }}>Gateway</span> .
                 </Typography>
               )}

@@ -21,18 +21,18 @@ export default function Claim() {
   });
 
   const router = useRouter();
-  const { credentialId } = router.query;
+  const { slug } = router.query;
 
   useQuery(
-    ['get-credential-group'],
+    ['get-credential-group-by-slug'],
     () => {
-      return gqlAnonMethods.get_credential_group_info({ credentialId });
+      return gqlAnonMethods.get_credential_group_info_by_slug({ slug });
     },
     {
       onSuccess: (data) =>
         setCredential({
-          name: data.credential_group_by_pk.name,
-          description: data.credential_group_by_pk.description,
+          name: data.credential_group[0].name,
+          description: data.credential_group[0].description,
         }),
     }
   );

@@ -5,24 +5,22 @@ import { useState, useEffect } from 'react';
 
 import { useQuery } from 'react-query';
 
-import { Button } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { Button, SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+
 import { gqlMethods } from '../../../services/api';
 import CredentialCard from '../../molecules/credential-card';
 
-const style = {
-  position: 'absolute' as const,
-  top: '60%',
-  left: '50%',
-  minWidth: '100%',
-  transform: 'translate(-50%, -50%)',
+const style: SxProps = {
   bgcolor: 'background.paper',
   p: 3,
-  marginTop: '-80px',
+  minHeight: '100%',
+  display: 'flex',
+  flexDirection: 'column',
 };
 
 export default function PocModalCompleted({ credentialId, open, handleClose }) {
@@ -69,47 +67,56 @@ export default function PocModalCompleted({ credentialId, open, handleClose }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Image
-            src="/favicon-512.png"
-            alt="gateway-logo"
-            height={40}
-            width={40}
-          />
-          <IconButton
-            aria-label="close"
-            onClick={() => router.push('/profile')}
-            sx={{
-              position: 'absolute',
-              right: 20,
-              top: 25,
-              color:"#fff",
-              background: "rgba(255, 255, 255, 0.15)",
-              borderRadius: "64px"
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
+          <Box>
+            <Image
+              src="/favicon-512.png"
+              alt="gateway-logo"
+              height={40}
+              width={40}
+            />
+            <IconButton
+              aria-label="close"
+              onClick={() => {
+                handleClose();
+                router.push('/profile');
+              }}
+              sx={{
+                position: 'absolute',
+                right: 20,
+                top: 25,
+                color: '#fff',
+                background: 'rgba(255, 255, 255, 0.15)',
+                borderRadius: '64px',
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              minHeight: '90vh',
+              justifyContent: 'center',
+              flex: 1,
             }}
           >
             <Box>
               <Typography
                 id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                fontSize={35}
+                variant="h3"
+                component="h3"
+                fontSize={48}
                 textAlign="center"
+                sx={{
+                  mb: 3,
+                }}
               >
                 Submission completed with success
               </Typography>
               <Typography
                 id="modal-modal-description"
-                sx={{ mb: 1,textAlign: 'center', marginBottom: '15px' }}
+                sx={{ mb: 6, textAlign: 'center' }}
                 fontSize={16}
               >
                 Your Proof of Credential submission{' '}
@@ -120,10 +127,13 @@ export default function PocModalCompleted({ credentialId, open, handleClose }) {
             <CredentialCard
               name={credential.name}
               description={credential.description}
+              sx={{
+                mb: 8,
+              }}
             />
             <Button
               variant="contained"
-              size="small"
+              size="medium"
               sx={{ margin: '20px 0 0 20px' }}
               onClick={() => router.push('/profile')}
             >

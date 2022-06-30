@@ -17,6 +17,7 @@ query get_new_user {
       status
       issuer_id
       details
+      categories
     }
   }
 }

@@ -6,11 +6,20 @@ export const mockLevels = ['High', 'Normal', 'Low'].map((level) => ({
 }));
 
 export const mockTypes = [
-  'Feature',
+  'Wireframe',
+  'Design',
   'Code',
-  'Collaboration',
-  'Event',
-  'Other',
+  'Pull-Request',
+  'Proposal',
+  'Forum',
+  'Social Media',
+  'Writing',
+  'Brainstorm',
+  'Official Partnership',
+  'Community Event',
+  'Smart Contract',
+  'Fundraise',
+  'Feedback',
 ].map((type) => ({
   value: paramCase(type),
   label: type,

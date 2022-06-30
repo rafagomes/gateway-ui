@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 interface CredentialCardProps {
   name: string;
   description: string;
+  categories?: string[];
   smaller?: boolean;
   claimable?: boolean;
   to_complete?: boolean;
@@ -26,6 +27,7 @@ interface CredentialCardProps {
 export default function CredentialCard({
   name,
   description,
+  categories = [],
   smaller,
   claimable,
   to_complete,
@@ -81,8 +83,9 @@ export default function CredentialCard({
           padding: '0 10px',
         }}
       >
-        <Chip label="Operations" />
-        <Chip label="Contributor" />
+        {categories.map((category, idx) => (
+          <Chip key={`cat-${idx}`} label={category} />
+        ))}
         {pending && (
           <Chip
             label="Pending Approval"

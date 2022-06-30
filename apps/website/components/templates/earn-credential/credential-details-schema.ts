@@ -1,4 +1,11 @@
-import { object, string, SchemaOf, date, bool } from 'yup';
+import { object, string, SchemaOf, date, bool, array } from 'yup';
+
+export type PoW = {
+  title: string;
+  description: string;
+  link: string;
+  type: string;
+};
 
 export type CredentialDetailsTypes = {
   role: string;
@@ -7,6 +14,7 @@ export type CredentialDetailsTypes = {
   end_date: Date;
   currently_working: boolean;
   responsibilities: string;
+  proof_of_work: PoW[];
 };
 
 export const credentialDetailsSchema: SchemaOf<CredentialDetailsTypes> = object(
@@ -17,5 +25,15 @@ export const credentialDetailsSchema: SchemaOf<CredentialDetailsTypes> = object(
     end_date: date().defined(),
     currently_working: bool().defined(),
     responsibilities: string().defined(),
+    proof_of_work: array()
+      .of(
+        object({
+          title: string().defined(),
+          description: string().defined(),
+          link: string().defined(),
+          type: string().defined(),
+        })
+      )
+      .defined(),
   }
 );
