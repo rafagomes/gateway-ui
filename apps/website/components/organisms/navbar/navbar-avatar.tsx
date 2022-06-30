@@ -23,7 +23,7 @@ interface Props {
 }
 
 /* TODO: Refactor */
-export async function NavBarAvatar({ user }: Props) {
+export function NavBarAvatar({ user }: Props) {
   const { element, isOpen, onClose, onOpen } = useMenu();
   /*   const onChangeLanguage = useCallback(
     (lang: string) => async () => {
