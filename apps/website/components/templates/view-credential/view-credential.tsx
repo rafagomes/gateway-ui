@@ -1,10 +1,23 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { useQuery } from 'react-query';
 
 import { TOKENS } from '@gateway/theme';
+
+import EmailIcon from '@mui/icons-material/Email';
+import RedditIcon from '@mui/icons-material/Reddit';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import { FaDiscord } from 'react-icons/fa';
+import { useMenu } from '@gateway/ui';
+
+import Badge, { badgeClasses } from '@mui/material/Badge';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
 
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArticleIcon from '@mui/icons-material/Article';
@@ -24,6 +37,7 @@ import {
 
 import { ROUTES } from '../../../constants/routes';
 import { gqlMethods } from '../../../services/api';
+import HoldersModal from '../../organisms/holders-modal/holders-modal';
 
 const DetailsFieldset = ({ children }) => (
   <fieldset
@@ -38,8 +52,14 @@ const DetailsFieldset = ({ children }) => (
 );
 
 export function ViewCredentialTemplate({ credential }) {
+  const { element, isOpen, onClose, onOpen } = useMenu();
   const session = useSession();
   const router = useRouter();
+
+  const [holders, setHolders] = useState([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const showHolders = () => setOpen(true);
+  const hideHolders = () => setOpen(false);
 
   const isIssuer = credential.issuer.id === session.data?.user.id;
   const details = credential.details;
@@ -47,7 +67,7 @@ export function ViewCredentialTemplate({ credential }) {
   const credentialImgUrl =
     'https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png';
 
-  const holders = useQuery(
+  useQuery(
     [credential.id, 'get-holders'],
     () => {
       if (!session.data.user) return;
@@ -57,11 +77,15 @@ export function ViewCredentialTemplate({ credential }) {
     },
     {
       enabled: !!session.data?.user,
+      onSuccess(data) {
+        setHolders(data.credentials);
+      },
     }
-  ).data?.credentials;
+  );
 
   return (
     <Stack gap={6} p={TOKENS.CONTAINER_PX}>
+      <HoldersModal open={open} handleClose={hideHolders} holders={holders} />
       <Box>
         <Image
           src="/favicon-512.png"
@@ -80,7 +104,106 @@ export function ViewCredentialTemplate({ credential }) {
           cursor: 'pointer',
         }}
       >
-        <IosShareIcon style={{ marginRight: '15px' }} />
+        
+        <Tooltip title="SHARE ON">
+        <IconButton onClick={onOpen}>
+          <Badge
+            overlap="circular"
+            sx={{
+              [`.${badgeClasses.badge}`]: {
+                borderRadius: '100%',
+                backgroundColor: (theme) => theme.palette.common.white,
+                color: (theme) => theme.palette.secondary.contrastText,
+                width: (theme) => theme.spacing(2.5),
+                height: (theme) => theme.spacing(2.5),
+                top: 'unset',
+                bottom: (theme) => `calc(50% - ${theme.spacing(2.5)})`,
+                right: '-10%',
+                boxShadow: (theme) => theme.shadows[1],
+              },
+            }}
+          >
+            <IosShareIcon style={{ marginRight: '15px', color:'#ffffff' }}/>
+          </Badge>
+        </IconButton>
+      </Tooltip>
+      <Menu
+        sx={{ mt: (theme) => theme.spacing(7) }}
+        id="menu-appbar"
+        anchorEl={element}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={isOpen}
+        onClose={onClose}
+      >
+        <Typography sx={{margin:"2px 15px 2px 10px",fontSize:'12px'}}>SHARE ON</Typography>
+        <MenuItem
+          key="email"
+          onClick={(e) => {
+            var mailBody="body";
+            window.location.href="mailto:yourmail@domain.com?subject=hii&body="+mailBody;
+            e.preventDefault();
+        }}
+        >
+          <Badge
+            overlap="circular"
+            sx={{ display: 'block', margin: '5px 32px 5px 0px' }}
+          >
+            <Avatar>
+              <EmailIcon></EmailIcon>
+            </Avatar>
+          </Badge>
+          <Typography textAlign="center">Email</Typography>
+        </MenuItem>
+        <MenuItem
+          key="reddit"
+        >
+          <Badge
+            overlap="circular"
+            sx={{ display: 'block', margin: '5px 32px 5px 0px' }}
+          >
+            <Avatar>
+              <RedditIcon></RedditIcon>
+            </Avatar>
+          </Badge>
+          <Typography textAlign="center">Reddit</Typography>
+        </MenuItem>
+        <MenuItem
+          key="twitter"
+        >
+          <Badge
+            overlap="circular"
+            sx={{ display: 'block', margin: '5px 32px 5px 0px' }}
+          >
+            <Avatar>
+              <TwitterIcon></TwitterIcon>
+            </Avatar>
+          </Badge>
+          <Typography textAlign="center">Twitter</Typography>
+        </MenuItem>
+        <MenuItem
+          sx={{ paddingRight: '85px' }}
+          key="discord"
+        >
+          <Badge
+            overlap="circular"
+            sx={{ display: 'block', margin: '5px 32px 5px 0px' }}
+          >
+            <Avatar>
+              <FaDiscord />
+            </Avatar>
+          </Badge>
+          <Typography textAlign="center">Discord</Typography>
+        </MenuItem>
+      </Menu>
+
         <Button variant="outlined" onClick={() => router.push(ROUTES.PROFILE)}>
           Check profile
         </Button>
@@ -184,7 +307,12 @@ export function ViewCredentialTemplate({ credential }) {
                         Holders
                       </Typography>
                     )}
-                    <AvatarGroup max={4}>
+                    <AvatarGroup
+                      spacing={15}
+                      max={4}
+                      onClick={() => showHolders()}
+                      sx={{ cursor: 'pointer' }}
+                    >
                       {holders?.map(({ target }, index) => {
                         const { name, username, pfp } = target;
                         const alt = `${name} ${username}`;
@@ -337,15 +465,19 @@ export function ViewCredentialTemplate({ credential }) {
                 ))}
             </Grid>
           )}
-        {(credential.status === 'to_complete' || 'null') && !isIssuer && (
-          <Button
-            variant="contained"
-            sx={{ margin: 'auto' }}
-            onClick={() => router.push(ROUTES.CREDENTIALS_EARN + credential.id)}
-          >
-            Complete Credential
-          </Button>
-        )}
+        {(credential.status === 'to_complete' ||
+          credential.status === undefined) &&
+          !isIssuer && (
+            <Button
+              variant="contained"
+              sx={{ margin: 'auto' }}
+              onClick={() =>
+                router.push(ROUTES.CREDENTIALS_EARN + credential.id)
+              }
+            >
+              Complete Credential
+            </Button>
+          )}
       </Stack>
       <Box alignSelf="flex-end" marginRight="100px">
         {(credential.status === 'pending' || 'to_mint' || 'minted') && (
