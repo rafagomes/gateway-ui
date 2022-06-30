@@ -29,7 +29,7 @@ import PocModalCompleted from '../../organisms/poc-modal-completed/poc-modal-com
 import { AccomplishmentsForm } from './accomplishments-form';
 import { CredentialDetailsForm } from './credential-details-form';
 
-export function EarnCredentialTemplate({ credential }) {
+export function EarnCredentialTemplate({ credential, user }) {
   const session = useSession();
   const router = useRouter();
 
@@ -69,9 +69,6 @@ export function EarnCredentialTemplate({ credential }) {
     control: form.control,
     name: 'accomplishments',
   });
-
-  const credentialImgUrl =
-    'https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png';
 
   const updateMutation = useMutation(
     'completeCredential',
@@ -140,7 +137,7 @@ export function EarnCredentialTemplate({ credential }) {
             cursor: 'pointer',
           }}
         >
-          <NavBarAvatar />
+          <NavBarAvatar user={user} />
         </Box>
         <Typography
           variant="h5"
@@ -183,8 +180,7 @@ export function EarnCredentialTemplate({ credential }) {
                 <Stack direction={{ xs: 'column', sm: 'row' }}>
                   {/* TODO: Responsiveness */}
                   <Image
-                    loader={() => credentialImgUrl}
-                    src={credentialImgUrl}
+                    src={credential.image}
                     height={389}
                     width={389}
                     alt="credential image"

@@ -30,6 +30,8 @@ export default function PocModalCompleted({ credentialId, open, handleClose }) {
   const [credential, setCredential] = useState({
     name: '',
     description: '',
+    image: '',
+    categories: []
   });
 
   const { refetch: getCredential } = useQuery(
@@ -51,6 +53,8 @@ export default function PocModalCompleted({ credentialId, open, handleClose }) {
         setCredential({
           name: result.data.credentials_by_pk.name,
           description: result.data.credentials_by_pk.description,
+          image: result.data.credentials_by_pk.image,
+          categories: result.data.credentials_by_pk.categories,
         })
       );
     }
@@ -127,6 +131,8 @@ export default function PocModalCompleted({ credentialId, open, handleClose }) {
             <CredentialCard
               name={credential.name}
               description={credential.description}
+              image={credential.image}
+              categories={credential.categories}
               sx={{
                 mb: 8,
               }}

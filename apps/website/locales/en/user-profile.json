@@ -1,11 +1,17 @@
 {
   "edit": {
     "about": "About",
-    "username": "Username",
-    "display-name": "Display Name",
+    "displayName": {
+      "label": "Display Name"
+    },
+    "username": {
+      "label": "Username",
+      "error": "This username is already taken."
+    },
     "email": {
+      "label": "Email",
       "disclaimer": "Add your email address to your Gateway profile to receive updates on your progress and to receive important notifications.",
-      "value": "Email Address"
+      "error": "This email address is already in use."
     }
   }
 }

@@ -148,7 +148,7 @@ export function ProfileTemplate({
             cursor: 'pointer',
           }}
         >
-          <NavBarAvatar />
+          <NavBarAvatar user={user} />
         </Box>
         <Avatar
           src={user.pfp.startsWith('http') ? user.pfp : '/images/logo.png'}
@@ -280,6 +280,8 @@ export function ProfileTemplate({
                     <CredentialCard
                       name={credential.name}
                       description={credential.description}
+                      image={credential.image}
+                      categories={credential.categories}
                       view={() =>
                         router.push(ROUTES.CREDENTIALS_VIEW + credential.id)
                       }
@@ -294,6 +296,8 @@ export function ProfileTemplate({
                     <CredentialCard
                       name={credential.name}
                       description={credential.description}
+                      image={credential.image}
+                      categories={credential.categories}
                       smaller
                       view={() =>
                         router.push(ROUTES.CREDENTIALS_VIEW + credential.id)

@@ -12,6 +12,7 @@ interface CredentialInfoProps {
   name: string;
   description: string;
   status?: string;
+  image?: string;
   admin?: {
     id: string;
     name: string;
@@ -53,6 +54,7 @@ export default function ViewCredential() {
           description: credentialInfo.description,
           status: credentialInfo.status,
           group_id: credentialInfo.group_id || credentialInfo.id,
+          image: credentialInfo.image,
           issuer: {
             id: credentialInfo?.admin?.id || credentialInfo?.issuer?.id,
             name: credentialInfo?.admin?.name || credentialInfo?.issuer?.name,

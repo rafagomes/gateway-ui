@@ -108,9 +108,6 @@ export function NewUserTemplate({ user }: Props) {
 
   const onSubmit = (data: NewUserSchema) => {
     // 1. verify if we have an user with the same username and/or email
-    const emails = validateData.users.map((user) => user.email_address);
-    const usernames = validateData.users.map((user) => user.username);
-
     validate();
 
     if (Object.keys(methods.formState.errors).length > 0) {

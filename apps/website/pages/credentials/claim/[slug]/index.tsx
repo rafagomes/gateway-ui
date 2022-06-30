@@ -33,6 +33,8 @@ export default function Claim() {
         setCredential({
           name: data.credential_group[0].name,
           description: data.credential_group[0].description,
+          image: data.credential_group[0].image,
+          categories: [data.credential_group[0].category],
         }),
     }
   );
@@ -78,6 +80,8 @@ export default function Claim() {
           <CredentialCard
             name={credential.name}
             description={credential.description}
+            image={credential.image}
+            categories={credential.categories}
           />
           <Box
             sx={{

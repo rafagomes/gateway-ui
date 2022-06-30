@@ -33,7 +33,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     (credential) => {
       return credential.id !== null;
     }
-  );
+  ).map((credential) => ({
+    ...credential,
+    categories: [credential.category]
+  }));
 
   const createdCredentials = (
     await gqlMethods(session.user).get_created_credentials({

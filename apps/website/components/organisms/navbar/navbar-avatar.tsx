@@ -16,10 +16,14 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { useAuth } from '../../../providers/auth';
+import { Users } from '../../../services/graphql/types.generated';
+
+interface Props {
+  user: Partial<Users>;
+}
 
 /* TODO: Refactor */
-
-export function NavBarAvatar() {
+export function NavBarAvatar({ user }: Props) {
   const { element, isOpen, onClose, onOpen } = useMenu();
   /*   const onChangeLanguage = useCallback(
     (lang: string) => async () => {
@@ -66,7 +70,7 @@ export function NavBarAvatar() {
               },
             }}
           >
-            <Avatar>R</Avatar>
+            <Avatar src={user.pfp}>{user.name[0]}</Avatar>
           </Badge>
         </IconButton>
       </Tooltip>

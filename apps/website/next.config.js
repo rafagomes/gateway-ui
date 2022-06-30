@@ -17,6 +17,9 @@ const nextConfig = {
     locales: ['en', 'pt'],
     defaultLocale: 'en',
   },
+  images: {
+    domains: ['ipfs.mygateway.xyz'],
+  }
 };
 
 const sentryWebpackPluginOptions = {

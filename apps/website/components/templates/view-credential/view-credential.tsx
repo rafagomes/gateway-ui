@@ -3,26 +3,19 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { FaDiscord } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 
 import { TOKENS } from '@gateway/theme';
-
-import EmailIcon from '@mui/icons-material/Email';
-import RedditIcon from '@mui/icons-material/Reddit';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import { FaDiscord } from 'react-icons/fa';
 import { useMenu } from '@gateway/ui';
-
-import Badge, { badgeClasses } from '@mui/material/Badge';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Tooltip from '@mui/material/Tooltip';
 
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import ArticleIcon from '@mui/icons-material/Article';
+import EmailIcon from '@mui/icons-material/Email';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import LooksOneIcon from '@mui/icons-material/LooksOne';
+import RedditIcon from '@mui/icons-material/Reddit';
+import TwitterIcon from '@mui/icons-material/Twitter';
 import {
   Avatar,
   Box,
@@ -34,6 +27,11 @@ import {
   Button,
   AvatarGroup,
 } from '@mui/material';
+import Badge, { badgeClasses } from '@mui/material/Badge';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
 
 import { ROUTES } from '../../../constants/routes';
 import { gqlMethods } from '../../../services/api';
@@ -64,8 +62,7 @@ export function ViewCredentialTemplate({ credential }) {
   const isIssuer = credential.issuer.id === session.data?.user.id;
   const details = credential.details;
   const accomplishments = credential.pow;
-  const credentialImgUrl =
-    'https://i.postimg.cc/6QJDW2r1/olympus-credential-picture.png';
+  const credentialImgUrl = credential.image;
 
   useQuery(
     [credential.id, 'get-holders'],
@@ -104,105 +101,101 @@ export function ViewCredentialTemplate({ credential }) {
           cursor: 'pointer',
         }}
       >
-        
+        {/*
         <Tooltip title="SHARE ON">
-        <IconButton onClick={onOpen}>
-          <Badge
-            overlap="circular"
-            sx={{
-              [`.${badgeClasses.badge}`]: {
-                borderRadius: '100%',
-                backgroundColor: (theme) => theme.palette.common.white,
-                color: (theme) => theme.palette.secondary.contrastText,
-                width: (theme) => theme.spacing(2.5),
-                height: (theme) => theme.spacing(2.5),
-                top: 'unset',
-                bottom: (theme) => `calc(50% - ${theme.spacing(2.5)})`,
-                right: '-10%',
-                boxShadow: (theme) => theme.shadows[1],
-              },
+          <IconButton onClick={onOpen}>
+            <Badge
+              overlap="circular"
+              sx={{
+                [`.${badgeClasses.badge}`]: {
+                  borderRadius: '100%',
+                  backgroundColor: (theme) => theme.palette.common.white,
+                  color: (theme) => theme.palette.secondary.contrastText,
+                  width: (theme) => theme.spacing(2.5),
+                  height: (theme) => theme.spacing(2.5),
+                  top: 'unset',
+                  bottom: (theme) => `calc(50% - ${theme.spacing(2.5)})`,
+                  right: '-10%',
+                  boxShadow: (theme) => theme.shadows[1],
+                },
+              }}
+            >
+              <IosShareIcon style={{ marginRight: '15px', color: '#ffffff' }} />
+            </Badge>
+          </IconButton>
+        </Tooltip>
+        <Menu
+          sx={{ mt: (theme) => theme.spacing(7) }}
+          id="menu-appbar"
+          anchorEl={element}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          open={isOpen}
+          onClose={onClose}
+        >
+          <Typography sx={{ margin: '2px 15px 2px 10px', fontSize: '12px' }}>
+            SHARE ON
+          </Typography>
+          <MenuItem
+            key="email"
+            onClick={(e) => {
+              const mailBody = 'body';
+              window.location.href =
+                'mailto:yourmail@domain.com?subject=hii&body=' + mailBody;
+              e.preventDefault();
             }}
           >
-            <IosShareIcon style={{ marginRight: '15px', color:'#ffffff' }}/>
-          </Badge>
-        </IconButton>
-      </Tooltip>
-      <Menu
-        sx={{ mt: (theme) => theme.spacing(7) }}
-        id="menu-appbar"
-        anchorEl={element}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        open={isOpen}
-        onClose={onClose}
-      >
-        <Typography sx={{margin:"2px 15px 2px 10px",fontSize:'12px'}}>SHARE ON</Typography>
-        <MenuItem
-          key="email"
-          onClick={(e) => {
-            var mailBody="body";
-            window.location.href="mailto:yourmail@domain.com?subject=hii&body="+mailBody;
-            e.preventDefault();
-        }}
-        >
-          <Badge
-            overlap="circular"
-            sx={{ display: 'block', margin: '5px 32px 5px 0px' }}
-          >
-            <Avatar>
-              <EmailIcon></EmailIcon>
-            </Avatar>
-          </Badge>
-          <Typography textAlign="center">Email</Typography>
-        </MenuItem>
-        <MenuItem
-          key="reddit"
-        >
-          <Badge
-            overlap="circular"
-            sx={{ display: 'block', margin: '5px 32px 5px 0px' }}
-          >
-            <Avatar>
-              <RedditIcon></RedditIcon>
-            </Avatar>
-          </Badge>
-          <Typography textAlign="center">Reddit</Typography>
-        </MenuItem>
-        <MenuItem
-          key="twitter"
-        >
-          <Badge
-            overlap="circular"
-            sx={{ display: 'block', margin: '5px 32px 5px 0px' }}
-          >
-            <Avatar>
-              <TwitterIcon></TwitterIcon>
-            </Avatar>
-          </Badge>
-          <Typography textAlign="center">Twitter</Typography>
-        </MenuItem>
-        <MenuItem
-          sx={{ paddingRight: '85px' }}
-          key="discord"
-        >
-          <Badge
-            overlap="circular"
-            sx={{ display: 'block', margin: '5px 32px 5px 0px' }}
-          >
-            <Avatar>
-              <FaDiscord />
-            </Avatar>
-          </Badge>
-          <Typography textAlign="center">Discord</Typography>
-        </MenuItem>
-      </Menu>
+            <Badge
+              overlap="circular"
+              sx={{ display: 'block', margin: '5px 32px 5px 0px' }}
+            >
+              <Avatar>
+                <EmailIcon></EmailIcon>
+              </Avatar>
+            </Badge>
+            <Typography textAlign="center">Email</Typography>
+          </MenuItem>
+          <MenuItem key="reddit">
+            <Badge
+              overlap="circular"
+              sx={{ display: 'block', margin: '5px 32px 5px 0px' }}
+            >
+              <Avatar>
+                <RedditIcon></RedditIcon>
+              </Avatar>
+            </Badge>
+            <Typography textAlign="center">Reddit</Typography>
+          </MenuItem>
+          <MenuItem key="twitter">
+            <Badge
+              overlap="circular"
+              sx={{ display: 'block', margin: '5px 32px 5px 0px' }}
+            >
+              <Avatar>
+                <TwitterIcon></TwitterIcon>
+              </Avatar>
+            </Badge>
+            <Typography textAlign="center">Twitter</Typography>
+          </MenuItem>
+          <MenuItem sx={{ paddingRight: '85px' }} key="discord">
+            <Badge
+              overlap="circular"
+              sx={{ display: 'block', margin: '5px 32px 5px 0px' }}
+            >
+              <Avatar>
+                <FaDiscord />
+              </Avatar>
+            </Badge>
+            <Typography textAlign="center">Discord</Typography>
+          </MenuItem>
+        </Menu>*/}
 
         <Button variant="outlined" onClick={() => router.push(ROUTES.PROFILE)}>
           Check profile
@@ -253,7 +246,6 @@ export function ViewCredentialTemplate({ credential }) {
             <Stack direction={{ xs: 'column', sm: 'row' }}>
               {/* TODO: Responsiveness */}
               <Image
-                loader={() => credentialImgUrl}
                 src={credentialImgUrl}
                 height={389}
                 width={389}
@@ -479,7 +471,7 @@ export function ViewCredentialTemplate({ credential }) {
             </Button>
           )}
       </Stack>
-      <Box alignSelf="flex-end" marginRight="100px">
+      {/*<Box alignSelf="flex-end" marginRight="100px">
         {(credential.status === 'pending' || 'to_mint' || 'minted') && (
           <ArrowCircleUpIcon
             fontSize="large"
@@ -487,7 +479,7 @@ export function ViewCredentialTemplate({ credential }) {
             style={{ cursor: 'pointer' }}
           />
         )}
-      </Box>
+        </Box>*/}
     </Stack>
   );
 }

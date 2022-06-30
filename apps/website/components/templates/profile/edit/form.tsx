@@ -96,16 +96,17 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
           margin: '30px 0',
         }}
       >
-        <div
+        <IconButton
           style={{
             background: 'rgba(255,255,255,0.15)',
             padding: '8px',
             height: '42px',
             borderRadius: 100,
           }}
+          onClick={() => router.back()}
         >
           <ArrowBackIcon />
-        </div>
+        </IconButton>
         <div>
           <Button
             variant="outlined"
@@ -146,7 +147,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
             <br />
             <TextField
               id="outlined-basic"
-              label={t('edit.display-name').toUpperCase()}
+              label={t('edit.displayName.label').toUpperCase()}
               variant="outlined"
               style={{ width: '100%' }}
               value={name}
@@ -160,7 +161,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
             />
             <TextField
               id="outlined-basic"
-              label={t('edit.username').toUpperCase()}
+              label={t('edit.username.label').toUpperCase()}
               variant="outlined"
               style={{ width: '100%', marginTop: 20 }}
               value={username}
@@ -190,7 +191,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
 
             <TextField
               id="outlined-basic"
-              label={t('edit.email.value').toUpperCase()}
+              label={t('edit.email.label').toUpperCase()}
               variant="outlined"
               style={{ width: '100%', marginTop: 20 }}
               {...register('email_address')}
@@ -324,7 +325,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
                     variant="body2"
                     color="text.secondary"
                   >
-                    {username ? username : 'Loading....'}
+                    {username ? '@' + username : 'Loading....'}
                   </Typography>
                 </CardContent>
               </CardActionArea>

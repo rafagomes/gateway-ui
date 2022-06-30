@@ -105,7 +105,7 @@ export function NewCredentialTemplate() {
         handleClose={handleClose}
         credentialGroupId={credentialGroupId}
       />
-      <Typography variant="h4">Create Proof of Credential</Typography>
+      <Typography variant="h4">Create Role Credential</Typography>
       <Stack
         justifyContent="space-between"
         alignItems="flex-start"

@@ -86,7 +86,7 @@ export default function CredentialCard({
         }}
       >
         {categories.map((category, idx) => (
-          <Chip key={`cat-${idx}`} label={category} />
+          <Chip key={`cat-${idx}`} label={category[0].toUpperCase() + category.slice(1, category.length)} />
         ))}
         {pending && (
           <Chip

@@ -20,6 +20,7 @@ export const mockTypes = [
   'Smart Contract',
   'Fundraise',
   'Feedback',
+  'Other',
 ].map((type) => ({
   value: paramCase(type),
   label: type,

@@ -1,4 +1,5 @@
-import { useSession } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
+import { useSession, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
 import { useQuery } from 'react-query';
@@ -11,6 +12,7 @@ interface CredentialInfoProps {
   name: string;
   description: string;
   status?: string;
+  image: string;
   admin?: {
     name: string;
     pfp: string;
@@ -24,7 +26,31 @@ interface CredentialInfoProps {
   };
 }
 
-export default function EarnCredential() {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
+
+  if (!session?.user) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: true,
+      },
+      props: {
+        user: null,
+      },
+    };
+  }
+
+  const user = (await gqlMethods(session.user).get_new_user()).me;
+
+  return {
+    props: {
+      user,
+    },
+  };
+};
+
+export default function EarnCredential({ user }) {
   const router = useRouter();
   const session = useSession();
 
@@ -49,6 +75,7 @@ export default function EarnCredential() {
           name: credentialInfo.name,
           description: credentialInfo.description,
           status: credentialInfo.status,
+          image: credentialInfo.image,
           issuer: {
             name: credentialInfo?.admin?.name || credentialInfo?.issuer?.name,
             pfp: credentialInfo?.admin?.pfp || credentialInfo?.issuer?.pfp,
@@ -63,5 +90,5 @@ export default function EarnCredential() {
 
   if (!credential.data) return null;
 
-  return <EarnCredentialTemplate credential={credential.data} />;
+  return <EarnCredentialTemplate credential={credential.data} user={user} />;
 }
