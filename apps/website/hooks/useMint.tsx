@@ -191,9 +191,9 @@ export function useBiconomyMint(
   }> => {
     if (contract) {
       try {
-        let tx;
-
         if (metaTxEnabled) {
+          let tx;
+
           const { data: contractData } =
             await contract.populateTransaction.mint(address.address, token_uri);
 
@@ -221,29 +221,30 @@ export function useBiconomyMint(
 
           console.log('Transaction hash : https://polygonscan.com/tx/' + tx);
 
-          //event emitter methods
-          provider.once(tx, (transaction) => {
-            console.log(transaction);
-          });
+          setMinted(true);
+
+          return {
+            isMinted: true,
+            polygonURL: 'https://polygonscan.com/tx/' + tx,
+          };
         } else {
           console.log('Sending normal transaction');
 
-          tx = await contract.mint(address.address, token_uri);
+          const tx = await contract.mint(address.address, token_uri);
 
           console.log(
             'Transaction hash : https://polygonscan.com/tx/' + tx.hash
           );
 
-          const confirmation = await tx.wait();
-          console.log(confirmation);
+          await tx.wait();
+
+          setMinted(true);
+
+          return {
+            isMinted: true,
+            polygonURL: 'https://polygonscan.com/tx/' + tx.hash,
+          };
         }
-
-        setMinted(true);
-
-        return {
-          isMinted: true,
-          polygonURL: 'https://polygonscan.com/tx/' + tx.hash,
-        };
       } catch (error) {
         console.log(error);
       }
