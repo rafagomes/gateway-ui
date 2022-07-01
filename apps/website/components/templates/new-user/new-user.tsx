@@ -77,6 +77,11 @@ export function NewUserTemplate({ user }: Props) {
     }
   );
 
+  const imageUploadMutation = useMutation(
+    'uploadImage',
+    session.data?.user && gqlMethods(session.data.user).upload_image
+  );
+
   const validate = () => {
     if (!isLoading && validateData?.users?.length) {
       const emails = validateData.users.map((user) => user.email_address);
@@ -106,7 +111,7 @@ export function NewUserTemplate({ user }: Props) {
     }
   };
 
-  const onSubmit = (data: NewUserSchema) => {
+  const onSubmit = async (data: NewUserSchema) => {
     // 1. verify if we have an user with the same username and/or email
     validate();
 
@@ -116,10 +121,24 @@ export function NewUserTemplate({ user }: Props) {
     }
 
     // 2. if not, update the user
+    let upload = null;
+
+    if (data.pfp !== user.pfp) {
+      upload = await imageUploadMutation.mutateAsync({
+        base64: data.pfp,
+        name: 'pfp image',
+      });
+    }
+
     updateMutation.mutate(
       {
         id: user.id,
         ...data,
+        ...(upload !== null && {
+          pfp:
+            'https://api.staging.mygateway.xyz/storage/file?id=' +
+            upload?.upload_image?.file.id,
+        }),
         about: '',
         discord_id: null,
       },

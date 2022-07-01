@@ -15,6 +15,8 @@ import {
   Grid,
   Stack,
   Divider,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 
 import { ROUTES } from '../../../constants/routes';
@@ -61,7 +63,7 @@ export function ProfileTemplate({
     session.data?.user && gqlMethods(session.data.user).mint_credential
   );
 
-  const { mint, loading, minted } = useBiconomyMint(
+  const { mint, loading, minted, snackbar } = useBiconomyMint(
     process.env.NEXT_PUBLIC_WEB3_NFT_ADDRESS
   );
 
@@ -441,6 +443,26 @@ export function ProfileTemplate({
           </Grid>
           */}
         </Grid>
+
+        {/* To show messages from useMint */}
+        <Snackbar
+          anchorOrigin={{
+            vertical: snackbar.vertical,
+            horizontal: snackbar.horizontal,
+          }}
+          open={snackbar.open}
+          onClose={snackbar.handleClose}
+          autoHideDuration={3000}
+          key={snackbar.vertical + snackbar.horizontal}
+        >
+          <Alert
+            onClose={snackbar.handleClose}
+            severity={snackbar.type}
+            sx={{ width: '100%' }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
       </main>
     </>
   );

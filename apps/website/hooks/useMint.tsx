@@ -7,7 +7,7 @@ import { ethers } from 'ethers';
 import { useAccount, chain, useSigner, useNetwork } from 'wagmi';
 
 import { CREDENTIAL_ABI } from '../constants/web3';
-import { usePinata } from './usePinata';
+import { useSnackbar } from './use-snackbar';
 
 let biconomy;
 let contract: ethers.Contract, contractInterface: ethers.ContractInterface;
@@ -32,6 +32,9 @@ export function useMint(
   // State
   const [loading, setLoading] = useState<boolean>(false);
   const [minted, setMinted] = useState<boolean>(false);
+
+  // Snackbar
+  const snackbar = useSnackbar();
 
   // Effects
   useEffect(() => {
@@ -137,6 +140,9 @@ export function useBiconomyMint(
   const [loading, setLoading] = useState<boolean>(false);
   const [minted, setMinted] = useState<boolean>(false);
 
+  // Snackbar
+  const snackbar = useSnackbar();
+
   useEffect(() => {
     async function init() {
       if (
@@ -215,8 +221,7 @@ export function useBiconomyMint(
           try {
             tx = await provider.send('eth_sendTransaction', [txParams]);
           } catch (err) {
-            console.log('handle errors like signature denied here');
-            console.log(err);
+            throw new Error("Minting failed! Try again later.");
           }
 
           console.log('Transaction hash : https://polygonscan.com/tx/' + tx);
@@ -246,8 +251,12 @@ export function useBiconomyMint(
           };
         }
       } catch (error) {
-        console.log(error);
+        snackbar.onOpen({ message: error.message || error, type: 'error' });
+        console.log("[useMint] Error:", error);
       }
+    }
+    else {
+      snackbar.onOpen({ message: "Biconomy is still loading. Try again in a few minutes!", type: 'warning' });
     }
 
     setMinted(false);
@@ -261,6 +270,7 @@ export function useBiconomyMint(
     mint,
     loading,
     minted,
+    snackbar
   };
 }
 

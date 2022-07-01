@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 
 import { ViewCredentialTemplate } from '../../../../components/templates/view-credential';
-import { gqlMethods } from '../../../../services/api';
+import { gqlAnonMethods, gqlMethods } from '../../../../services/api';
 
 interface CredentialInfoProps {
   id: string;
@@ -13,6 +13,8 @@ interface CredentialInfoProps {
   description: string;
   status?: string;
   image?: string;
+  details?: Record<string, any>;
+  pow?: Record<string, any>;
   admin?: {
     id: string;
     name: string;
@@ -37,13 +39,12 @@ export default function ViewCredential() {
   const credential = useQuery(
     [credentialId, 'get-credential'],
     () => {
-      if (!session.data.user) return;
-      return gqlMethods(session.data.user).get_credential({
+      return gqlAnonMethods.get_credential({
         credential_id: credentialId,
       });
     },
     {
-      enabled: !!session.data?.user && !!credentialId,
+      enabled: !!credentialId,
       select: (data) => {
         const credentialInfo: CredentialInfoProps =
           data?.['credentials_by_pk'] ?? data?.['credential_group_by_pk'];
@@ -55,6 +56,8 @@ export default function ViewCredential() {
           status: credentialInfo.status,
           group_id: credentialInfo.group_id || credentialInfo.id,
           image: credentialInfo.image,
+          details: credentialInfo?.details,
+          pow: credentialInfo?.pow,
           issuer: {
             id: credentialInfo?.admin?.id || credentialInfo?.issuer?.id,
             name: credentialInfo?.admin?.name || credentialInfo?.issuer?.name,

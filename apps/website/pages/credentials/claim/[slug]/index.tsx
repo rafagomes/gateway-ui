@@ -43,35 +43,45 @@ export default function Claim() {
 
   return (
     <div>
-      <Box>
-        <Image
-          src="/favicon-512.png"
-          alt="gateway-logo"
-          height={40}
-          width={40}
-        />
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        p: 3
+      }}>
+        <Box>
+          <Image
+            src="/favicon-512.png"
+            alt="gateway-logo"
+            height={40}
+            width={40}
+          />
+        </Box>
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-evenly',
+            justifyContent: 'center',
             alignItems: 'center',
-            minHeight: '830px',
+            flex: 1
           }}
         >
           <Box>
             <Typography
               id="modal-modal-title"
-              variant="h6"
-              component="h2"
+              variant="h3"
+              component="h3"
               fontSize={48}
               textAlign="center"
+              sx={{
+                mb: 2
+              }}
             >
               Claim your credential now
             </Typography>
             <Typography
               id="modal-modal-description"
-              sx={{ mt: 2, textAlign: 'center' }}
+              sx={{ mb: 6, textAlign: 'center' }}
               fontSize={16}
             >
               You&apos;re selected to claim your{' '}
@@ -84,6 +94,9 @@ export default function Claim() {
             description={credential.description}
             image={credential.image}
             categories={credential.categories}
+            sx={{
+              mb: 8
+            }}
           />
           <Box
             sx={{

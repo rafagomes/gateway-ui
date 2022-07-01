@@ -47,6 +47,9 @@ export default function PocModalMinted({
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        sx={{
+          overflowY: 'auto'
+        }}
       >
         <Box sx={style}>
           <Box>
@@ -108,6 +111,8 @@ export default function PocModalMinted({
             <CredentialCard
               name={credential?.name}
               description={credential?.description}
+              image={credential?.image}
+              categories={credential?.categories}
               sx={{
                 mb: 8,
               }}

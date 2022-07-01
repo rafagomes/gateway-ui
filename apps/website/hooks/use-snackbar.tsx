@@ -9,6 +9,7 @@ import { SnackbarOrigin } from '@mui/material/Snackbar';
 
 type Payload = Partial<SnackbarOrigin> & {
   message?: string;
+  type?: AlertColor;
 };
 
 interface State extends Payload {

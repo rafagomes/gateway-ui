@@ -26,6 +26,11 @@ import {
   Divider,
   Button,
   AvatarGroup,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Link,
 } from '@mui/material';
 import Badge, { badgeClasses } from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
@@ -34,13 +39,14 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 
 import { ROUTES } from '../../../constants/routes';
-import { gqlMethods } from '../../../services/api';
+import { gqlAnonMethods, gqlMethods } from '../../../services/api';
 import HoldersModal from '../../organisms/holders-modal/holders-modal';
 
 const DetailsFieldset = ({ children }) => (
   <fieldset
     style={{
       display: 'flex',
+      flexDirection: 'column',
       border: 'none',
       marginBottom: '15px',
     }}
@@ -67,13 +73,11 @@ export function ViewCredentialTemplate({ credential }) {
   useQuery(
     [credential.id, 'get-holders'],
     () => {
-      if (!session.data.user) return;
-      return gqlMethods(session.data.user).get_credential_by_groupid({
+      return gqlAnonMethods.get_credential_by_groupid({
         group_id: credential.group_id,
       });
     },
     {
-      enabled: !!session.data?.user,
       onSuccess(data) {
         setHolders(data.credentials);
       },
@@ -197,9 +201,14 @@ export function ViewCredentialTemplate({ credential }) {
           </MenuItem>
         </Menu>*/}
 
-        <Button variant="outlined" onClick={() => router.push(ROUTES.PROFILE)}>
-          Check profile
-        </Button>
+        {session.data?.user && (
+          <Button
+            variant="outlined"
+            onClick={() => router.push(ROUTES.PROFILE)}
+          >
+            Check profile
+          </Button>
+        )}
       </Box>
       <Typography
         variant="h5"
@@ -236,6 +245,7 @@ export function ViewCredentialTemplate({ credential }) {
             </Typography>
             <Typography
               variant="caption"
+              color="rgba(255, 255, 255, 0.7)"
               sx={{ display: 'block', fontSize: '14px' }}
               ml={{ xs: '0px', md: '92px' }}
             >
@@ -341,7 +351,7 @@ export function ViewCredentialTemplate({ credential }) {
             direction={{ xs: 'column', md: 'row' }}
             sx={{ rowGap: '15px' }}
           >
-            <Grid item xs={5}>
+            <Grid item md={5}>
               <Typography
                 variant="h6"
                 fontWeight="bold"
@@ -352,25 +362,65 @@ export function ViewCredentialTemplate({ credential }) {
               </Typography>
               <Typography
                 variant="caption"
+                color="rgba(255, 255, 255, 0.7)"
                 sx={{ display: 'block', fontSize: '14px' }}
                 ml={{ xs: '0px', md: '92px' }}
               >
                 Customize Your Credential
               </Typography>
             </Grid>
-            <Grid item xs={4}>
-              {details &&
-                Object.keys(details).map(
-                  (detailKey, index) =>
-                    details[detailKey] && (
-                      <DetailsFieldset key={index}>
-                        <legend>{detailKey}</legend>
-                        <Typography variant="h6" fontWeight="bold">
-                          {details[detailKey]}
-                        </Typography>
-                      </DetailsFieldset>
-                    )
-                )}
+            <Grid item md={4}>
+              {details && (
+                <Box>
+                  <DetailsFieldset>
+                    <Typography
+                      variant="caption"
+                      color="rgba(255, 255, 255, 0.7)"
+                    >
+                      Role
+                    </Typography>
+                    <Typography variant="h6" fontWeight="bold">
+                      {details.role}
+                    </Typography>
+                  </DetailsFieldset>
+                  <DetailsFieldset>
+                    <Typography
+                      variant="caption"
+                      color="rgba(255, 255, 255, 0.7)"
+                    >
+                      Start Date
+                    </Typography>
+                    <Typography variant="h6" fontWeight="bold">
+                      {new Date(details.startDate).toLocaleDateString()}
+                    </Typography>
+                  </DetailsFieldset>
+                  <DetailsFieldset>
+                    <Typography
+                      variant="caption"
+                      color="rgba(255, 255, 255, 0.7)"
+                    >
+                      End Date
+                    </Typography>
+                    <Typography variant="h6" fontWeight="bold">
+                      {details.isStillWorking
+                        ? 'Present'
+                        : new Date(details.endDate).toLocaleDateString()}
+                    </Typography>
+                  </DetailsFieldset>
+                  <DetailsFieldset>
+                    <Typography
+                      variant="caption"
+                      color="rgba(255, 255, 255, 0.7)"
+                    >
+                      Level of Commitment
+                    </Typography>
+                    <Typography variant="h6" fontWeight="bold">
+                      {details.commitmentLevel[0].toUpperCase() +
+                        details.commitmentLevel.slice(1)}
+                    </Typography>
+                  </DetailsFieldset>
+                </Box>
+              )}
             </Grid>
           </Grid>
         )}
@@ -384,7 +434,7 @@ export function ViewCredentialTemplate({ credential }) {
               sx={{ rowGap: '15px' }}
             >
               {/* Proudest Accomplishments */}
-              <Grid item xs={5}>
+              <Grid item md={5}>
                 <Typography
                   variant="h6"
                   fontWeight="bold"
@@ -395,6 +445,7 @@ export function ViewCredentialTemplate({ credential }) {
                 </Typography>
                 <Typography
                   variant="caption"
+                  color="rgba(255, 255, 255, 0.7)"
                   sx={{ display: 'block', fontSize: '14px' }}
                   ml={{ xs: '0px', md: '92px' }}
                 >
@@ -402,9 +453,7 @@ export function ViewCredentialTemplate({ credential }) {
                   verified!
                 </Typography>
               </Grid>
-              {accomplishments &&
-                accomplishments.map((accomplishment, index) => (
-                  <Grid item xs={4} key={index} sx={{ paddingLeft: '87px' }}>
+              {/* <Grid item xs={4} key={index}>
                     <Typography
                       variant="subtitle1"
                       fontWeight="bold"
@@ -414,9 +463,7 @@ export function ViewCredentialTemplate({ credential }) {
                         marginBottom: '10px',
                       }}
                     >
-                      <LooksOneIcon
-                        style={{ marginLeft: '-40px', marginRight: '15px' }}
-                      />
+                      <LooksOneIcon />
                       {accomplishment.title}
                     </Typography>
                     <Typography variant="caption">
@@ -453,13 +500,74 @@ export function ViewCredentialTemplate({ credential }) {
                         </Typography>
                       </Box>
                     </Box>
-                  </Grid>
-                ))}
+                    </Grid> */}
+              <Grid item md={7}>
+                {accomplishments &&
+                  accomplishments.map((accomplishment, index) => (
+                    <Stack flexDirection="row" key={'accomplishment-' + index}>
+                      <Avatar
+                        sx={{
+                          marginRight: 4,
+                        }}
+                      >
+                        {index + 1}
+                      </Avatar>
+                      <Box flex={1}>
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            mb: 3,
+                          }}
+                        >
+                          {accomplishment.title}
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          color="rgba(255, 255, 255, 0.7)"
+                        >
+                          {accomplishment.description}
+                        </Typography>
+                        {credential.pow[index] && (
+                          <Box sx={{ marginTop: '30px' }}>
+                            <Typography variant="subtitle1" fontWeight="bold">
+                              Proof of Work
+                            </Typography>
+                            <List>
+                              {credential.pow[index].pow.map((pow, index) => (
+                                <ListItem key={index}>
+                                  <ListItemIcon>
+                                    <ArticleIcon
+                                      sx={{
+                                        color: 'rgba(255, 255, 255, 0.56)',
+                                      }}
+                                    />
+                                  </ListItemIcon>
+                                  <ListItemText
+                                    primary={pow.pow_description}
+                                    secondary={
+                                      <Link
+                                        href={pow.pow_link}
+                                        variant="body1"
+                                        target="_blank"
+                                      >
+                                        {pow.pow_link}
+                                      </Link>
+                                    }
+                                  />
+                                </ListItem>
+                              ))}
+                            </List>
+                          </Box>
+                        )}
+                      </Box>
+                    </Stack>
+                  ))}
+              </Grid>
             </Grid>
           )}
-        {(credential.status === 'to_complete' ||
+        {(session.data?.user && (credential.status === 'to_complete' ||
           credential.status === undefined) &&
-          !isIssuer && (
+          !isIssuer) && (
             <Button
               variant="contained"
               sx={{ margin: 'auto' }}
