@@ -41,6 +41,9 @@ import Tooltip from '@mui/material/Tooltip';
 import { ROUTES } from '../../../constants/routes';
 import { gqlAnonMethods, gqlMethods } from '../../../services/api';
 import HoldersModal from '../../organisms/holders-modal/holders-modal';
+import normalizeUrl from 'normalize-url';
+import { LinkOutlined } from '@mui/icons-material';
+import { CredentialCategories } from '../../molecules/credential-card';
 
 const DetailsFieldset = ({ children }) => (
   <fieldset
@@ -260,7 +263,7 @@ export function ViewCredentialTemplate({ credential }) {
                 height={389}
                 width={389}
                 alt="credential image"
-                style={{ borderRadius: '5px' }}
+                style={{ borderRadius: '5px', objectFit: 'cover', objectPosition: 'center' }}
               />
               <Box
                 sx={{
@@ -277,7 +280,7 @@ export function ViewCredentialTemplate({ credential }) {
                 >
                   {credential.name}
                 </Typography>
-                <Chip label="Contributor" sx={{ marginBottom: '20px' }} />
+                {credential.categories.map((category) => (<Chip label={CredentialCategories[category]} sx={{ marginBottom: '20px' }} />))}
                 <Box>
                   <Typography variant="caption" sx={{ fontSize: '16px' }}>
                     {credential.description}
@@ -431,7 +434,7 @@ export function ViewCredentialTemplate({ credential }) {
             <Grid
               container
               direction={{ xs: 'column', md: 'row' }}
-              sx={{ rowGap: '15px' }}
+              sx={{ rowGap: 4 }}
             >
               {/* Proudest Accomplishments */}
               <Grid item md={5}>
@@ -504,7 +507,9 @@ export function ViewCredentialTemplate({ credential }) {
               <Grid item md={7}>
                 {accomplishments &&
                   accomplishments.map((accomplishment, index) => (
-                    <Stack flexDirection="row" key={'accomplishment-' + index}>
+                    <Stack flexDirection="row" key={'accomplishment-' + index} sx={{
+                      marginBottom: 6
+                    }}>
                       <Avatar
                         sx={{
                           marginRight: 4,
@@ -517,6 +522,7 @@ export function ViewCredentialTemplate({ credential }) {
                           variant="h6"
                           sx={{
                             mb: 3,
+                            wordBreak: 'break-word',
                           }}
                         >
                           {accomplishment.title}
@@ -524,11 +530,14 @@ export function ViewCredentialTemplate({ credential }) {
                         <Typography
                           variant="body1"
                           color="rgba(255, 255, 255, 0.7)"
+                          sx={{
+                            wordBreak: 'break-word',
+                          }}
                         >
                           {accomplishment.description}
                         </Typography>
                         {credential.pow[index] && (
-                          <Box sx={{ marginTop: '30px' }}>
+                          <Box sx={{ marginTop: 4 }}>
                             <Typography variant="subtitle1" fontWeight="bold">
                               Proof of Work
                             </Typography>
@@ -536,7 +545,7 @@ export function ViewCredentialTemplate({ credential }) {
                               {credential.pow[index].pow.map((pow, index) => (
                                 <ListItem key={index}>
                                   <ListItemIcon>
-                                    <ArticleIcon
+                                    <LinkOutlined
                                       sx={{
                                         color: 'rgba(255, 255, 255, 0.56)',
                                       }}
@@ -546,13 +555,16 @@ export function ViewCredentialTemplate({ credential }) {
                                     primary={pow.pow_description}
                                     secondary={
                                       <Link
-                                        href={pow.pow_link}
+                                        href={normalizeUrl(pow.pow_link, { defaultProtocol: "https:" })}
                                         variant="body1"
                                         target="_blank"
                                       >
-                                        {pow.pow_link}
+                                        {normalizeUrl(pow.pow_link, { defaultProtocol: "https:" })}
                                       </Link>
                                     }
+                                    sx={{
+                                      wordBreak: 'break-word',
+                                    }}
                                   />
                                 </ListItem>
                               ))}

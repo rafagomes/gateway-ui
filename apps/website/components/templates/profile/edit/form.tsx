@@ -155,7 +155,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
               error={!!errors.name}
               helperText={errors.name?.message}
               onChange={(e) => {
-                window.localStorage.setItem('name', e.target.value);
+                setValue('name', e.target.value);
                 setName(e.target.value);
               }}
             />
@@ -169,7 +169,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
               error={!!errors.username}
               helperText={errors.username?.message}
               onChange={(e) => {
-                window.localStorage.setItem('username', e.target.value);
+                setValue('username', e.target.value);
                 setUsername(e.target.value);
               }}
             />
@@ -184,6 +184,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
               error={!!errors.about}
               helperText={errors.about?.message}
               onChange={(e) => {
+                setValue('about', e.target.value);
                 setAbout(e.target.value);
               }}
               value={about}
@@ -198,6 +199,7 @@ export function Form({ userData, isLoading, onSubmit }: Props) {
               error={!!errors.email_address}
               helperText={errors.email_address?.message}
               onChange={(e) => {
+                setValue('email_address', e.target.value);
                 setEmail(e.target.value);
               }}
               type="email"

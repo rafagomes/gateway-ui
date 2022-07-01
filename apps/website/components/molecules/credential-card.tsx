@@ -25,6 +25,24 @@ interface CredentialCardProps {
   sx?: SxProps;
 }
 
+export const CredentialCategories = {
+  'operations': 'Operations',
+  'marketing': 'Marketing',
+  'design': 'Design',
+  'developer': 'Developer',
+  'engineering': 'Engineering',
+  'governance': 'Governance',
+  'education': 'Education',
+  'community': 'Community',
+  'product': 'Product',
+  'business-development': 'Business Development',
+  'talent-hr': 'Talent/HR',
+  'treasury': 'Treasury',
+  'strategy': 'Strategy',
+  'partnerships': 'Partnerships',
+  'legal': 'Legal',
+}
+
 export default function CredentialCard({
   name,
   description,
@@ -86,7 +104,7 @@ export default function CredentialCard({
         }}
       >
         {categories.map((category, idx) => (
-          <Chip key={`cat-${idx}`} label={category[0].toUpperCase() + category.slice(1, category.length)} />
+          <Chip key={`cat-${idx}`} label={CredentialCategories[category]} />
         ))}
         {pending && (
           <Chip

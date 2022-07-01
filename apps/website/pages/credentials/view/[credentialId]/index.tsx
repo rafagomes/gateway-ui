@@ -14,6 +14,8 @@ interface CredentialInfoProps {
   status?: string;
   image?: string;
   details?: Record<string, any>;
+  categories?: string[];
+  category?: string;
   pow?: Record<string, any>;
   admin?: {
     id: string;
@@ -57,6 +59,7 @@ export default function ViewCredential() {
           group_id: credentialInfo.group_id || credentialInfo.id,
           image: credentialInfo.image,
           details: credentialInfo?.details,
+          categories: credentialInfo?.categories ? credentialInfo?.categories : [credentialInfo?.category],
           pow: credentialInfo?.pow,
           issuer: {
             id: credentialInfo?.admin?.id || credentialInfo?.issuer?.id,

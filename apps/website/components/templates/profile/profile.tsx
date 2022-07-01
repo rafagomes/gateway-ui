@@ -267,7 +267,7 @@ export function ProfileTemplate({
                     size="small"
                     onClick={() => router.push('/credentials/new')}
                   >
-                    Create a Proof of Credential
+                    Create a Credential
                   </Button>
                 )}
               </Box>

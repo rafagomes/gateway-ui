@@ -19,16 +19,16 @@ type Props = {
 };
 
 export function EditProfileTemplate({ user }: Props) {
+  const methods = useForm<EditUserSchema>({
+    resolver: yupResolver(schema),
+    defaultValues: defaultValues(user),
+  });
+
   const router = useRouter();
   const session = useSession();
   const snackbar = useSnackbar();
 
   const { t } = useTranslation('user-profile');
-
-  const methods = useForm<EditUserSchema>({
-    resolver: yupResolver(schema),
-    defaultValues: defaultValues(user),
-  });
 
   const email_address = methods.watch('email_address') as string;
   const username = methods.watch('username') as string;
@@ -143,10 +143,7 @@ export function EditProfileTemplate({ user }: Props) {
     );
   };
 
-  useEffect(() => {
-    validate();
-    console.log(email_address, username)
-  }, [validateData, isLoading, email_address, username]);
+  useEffect(validate, [validateData, isLoading, email_address, username]);
 
   return (
     <div>
